@@ -55,24 +55,27 @@ export default function TaskList() {
 
   const sortedTasks = [...tasks].sort((a, b) => {
     if (!sortKey) return 0;
-    const aValue = a[sortKey];
-    const bValue = b[sortKey];
-  
     if (sortKey === "dueDate") {
+      const aHasDate = !!a.dueDate;
+      const bHasDate = !!b.dueDate;
+
+      if (!aHasDate && bHasDate) return 1;   // aが欠損 → 後ろに
+      if (aHasDate && !bHasDate) return -1;  // bが欠損 → bを後ろに
+      if (!aHasDate && !bHasDate) return 0;  // 両方欠損 → 同順位
       const aDate = new Date(`${a.dueDate}T${a.dueTime || "00:00"}`);
       const bDate = new Date(`${b.dueDate}T${b.dueTime || "00:00"}`);
       return sortOrder === "asc"
         ? aDate.getTime() - bDate.getTime()
         : bDate.getTime() - aDate.getTime();
     }
-    
-  
+    const aValue = a[sortKey];
+    const bValue = b[sortKey];
     if (typeof aValue === "number" && typeof bValue === "number") {
       return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
     }
-  
     return 0;
   });
+  
 
   const toggleSort = (key: "dueDate" | "level") => {
     if (sortKey === key) {
@@ -106,21 +109,25 @@ export default function TaskList() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8 w-[55%] max-w-5xl mt-8">
-      <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-10 mb-4">
-        <h2 className="text-xl font-bold">あなたのタスク一覧</h2>
-        <button
-          onClick={() => setOpenAddingTask(true)}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          タスクを作成
-        </button>
-      </div>
+<>
+  {/* 📄 テーブルを囲む「紙」 */}
+  <div className="fixed top-20 bg-white rounded-xl shadow-lg p-8 w-[50%] max-w-5xl h-[85vh] overflow-hidden z-40">
+    <div className="flex flex-col sm:flex-row items-center justify-between px-4 pb-4">
+      <h2 className="text-xl font-bold">あなたのタスク一覧</h2>
+      <button
+        onClick={() => setOpenAddingTask(true)}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-3 sm:mt-0"
+      >
+        タスクを作成
+      </button>
+    </div>
+    {/* 📜 スクロールするテーブル */}
+    <div className="h-[70vh] overflow-auto pt-2">
       {tasks.length === 0 ? (
         <p className="text-gray-500">まだタスクがありません。</p>
       ) : (
-       <table className="min-w-full text-sm border border-gray-300 rounded overflow-hidden">
-          <thead className="bg-gray-100 text-left">
+        <table className="min-w-full text-sm border border-gray-300 rounded overflow-hidden ">
+          <thead className="bg-gray-100 text-left sticky top-0 z-10">
             <tr>
               <th className="px-4 py-2 font-semibold">タスク名</th>
               <th
@@ -142,50 +149,40 @@ export default function TaskList() {
             {sortedTasks.map((task) => (
               <tr
                 key={task.id}
-                className="border-t border-gray-200 h-15 rounded-md shadow-sm p-5 m-1"
+                onClick={() => setEditingTask(task)}
+                className="cursor-pointer hover:bg-blue-50 transition border-t border-gray-200"
               >
-                <td>
-                  <div className="bg-white p-3 m-1 flex items-center space-x-2">
-                    <div
-                      className="w-8 h-8 rounded-full"
-                      style={{ backgroundColor: task.color }}
-                    />
-                    <span>{task.title}</span>
-                  </div>
+                <td className="p-3 flex items-center space-x-2">
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: task.color }}
+                  />
+                  <span>{task.title}</span>
                 </td>
-                <td>
-                  <div className="bg-white p-3 m-1 text-gray-700">
-                    {task.dueDate}
-                    {task.dueTime && ` ${task.dueTime}`}
-                  </div>
+                <td className="p-3 text-gray-700">
+                  {task.dueDate} {task.dueTime && ` ${task.dueTime}`}
                 </td>
-                <td>
-                  <div className="bg-white p-3 m-1 text-gray-600">
-                    Level {task.level}
-                  </div>
-                </td>
-                <td>
-                  <div className="bg-white p-3 m-1">
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        onClick={() => setEditingTask(task)}
-                        className="bg-black text-white px-3 py-1 rounded text-xs hover:bg-gray-800"
-                      >
-                        ✏ 編集
-                      </button>
-                      <button
-                        onClick={() => setCompleteTask(task)}
-                        className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600"
-                      >
-                        ✨ 完了
-                      </button>
-                      <button
-                        onClick={() => setSelectedTask(task)}
-                        className="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600"
-                      >
-                        💀 リタイア
-                      </button>
-                    </div>
+                <td className="p-3 text-gray-600">Level {task.level}</td>
+                <td className="p-3">
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCompleteTask(task);
+                      }}
+                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                    >
+                      完了
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedTask(task);
+                      }}
+                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                    >
+                      リタイア
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -193,30 +190,15 @@ export default function TaskList() {
           </tbody>
         </table>
       )}
-      <AddTaskModal
-        isOpen={openAddingTask}
-        onCancel={() => setOpenAddingTask(false)}
-        onAdded={() => setOpenAddingTask(false)}
-      />
-      <EditTaskModal
-        isOpen={!!editingTask}
-        task={editingTask}
-        onCancel={() => setEditingTask(null)}
-        onUpdated={() => setEditingTask(null)}
-      />
-      <CompleteTaskModal
-        isOpen={!!completeTask}
-        task={completeTask}
-        onCancel={() => setCompleteTask(null)}
-        onCompleted={handleComplete}
-      />
-      {/* 削除確認モーダル */}
-      <DeleteTaskModal
-        isOpen={!!selectedTask}
-        task={selectedTask}
-        onCancel={() => setSelectedTask(null)}
-        onConfirm={handleDelete}
-      />
-      </div>
+    </div>
+  </div>
+
+  {/* モーダルたち */}
+  <AddTaskModal isOpen={openAddingTask} onCancel={() => setOpenAddingTask(false)} onAdded={() => setOpenAddingTask(false)} />
+  <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => setEditingTask(null)} onUpdated={() => setEditingTask(null)} />
+  <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={handleComplete} />
+  <DeleteTaskModal isOpen={!!selectedTask} task={selectedTask} onCancel={() => setSelectedTask(null)} onConfirm={handleDelete} />
+</>
+
   );
 }
