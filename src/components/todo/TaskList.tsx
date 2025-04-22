@@ -6,6 +6,8 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../../utils/firebase/firebase";
 import DeleteTaskModal from "./DeleteTaskModal";
@@ -103,15 +105,30 @@ export default function TaskList({ characterDisplayRef }: Props) {
   };
 
   const handleDelete = async () => {
-    if (!selectedTask) return;
+    if (!selectedTask || !auth.currentUser) return;
+  
     try {
+      // タスク削除
       await deleteDoc(doc(db, "todos", selectedTask.id));
+  
+      // 好感度レベルを減らす
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        const currentLevel = data.affectionLevel || 1;
+        const newLevel = Math.max(1, currentLevel - 1);
+        await updateDoc(userRef, { affectionLevel: newLevel });
+      }
+  
       setSelectedTask(null);
+      characterDisplayRef.current?.refreshCharacterData(); // 好感度UI更新
     } catch (err) {
       console.error("削除エラー:", err);
       alert("削除に失敗しました");
     }
   };
+  
 
   return (
 <>
@@ -136,24 +153,26 @@ export default function TaskList({ characterDisplayRef }: Props) {
         <table className="min-w-full text-sm border border-gray-300 rounded overflow-hidden">
           <thead className="bg-gray-100 text-left sticky top-0 ">
             <tr>
-              <th className="px-4 py-2 font-semibold">タスク名</th>
+              <th className="px-4 py-2 font-semibold w-[40%]">タスク名</th>
               <th
-                className="px-4 py-2 font-semibold cursor-pointer hover:underline"
+                className="px-4 py-2 font-semibold cursor-pointer hover:underline w-[20%]"
                 onClick={() => toggleSort("dueDate")}
               >
                 期限 {sortKey === "dueDate" && (sortOrder === "asc" ? "⌛️" : "⏳")}
               </th>
               <th
-                className="px-4 py-2 font-semibold cursor-pointer hover:underline"
+                className="px-4 py-2 font-semibold cursor-pointer hover:underline w-[15%]"
                 onClick={() => toggleSort("level")}
               >
                 難易度 {sortKey === "level" && (sortOrder === "asc" ? "⌛️" : "⏳")}
               </th>
-              <th className="px-4 py-2 font-semibold"></th>
+              <th className="px-4 py-2 font-semibold w-[25%]"></th>
             </tr>
           </thead>
           <tbody>
-            {sortedTasks.map((task) => (
+          {sortedTasks.map((task) => {
+            const isExpired = task.dueDate && new Date(`${task.dueDate}T${task.dueTime || "00:00"}`) < new Date();
+            return (
               <tr
                 key={task.id}
                 onClick={() => setEditingTask(task)}
@@ -171,30 +190,40 @@ export default function TaskList({ characterDisplayRef }: Props) {
                 </td>
                 <td className="p-3 text-gray-600">Level {task.level}</td>
                 <td className="p-3">
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCompleteTask(task);
-                      }}
-                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                    >
-                      完了
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedTask(task);
-                      }}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    >
-                      リタイア
-                    </button>
+                  <div className="flex flex-col gap-1">
+                    {isExpired && (
+                      <p className="text-red-500 text-xs">
+                        ※期限が切れているのでリタイアしてください
+                      </p>
+                    )}
+                    <div className="flex gap-2">
+                      {!isExpired && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCompleteTask(task);
+                          }}
+                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                        >
+                          完了
+                        </button>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedTask(task);
+                        }}
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                      >
+                        リタイア
+                      </button>
+                    </div>
                   </div>
                 </td>
               </tr>
-            ))}
-          </tbody>
+            );
+          })}
+        </tbody>
         </table>
       )}
     </div>

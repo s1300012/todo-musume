@@ -11,21 +11,22 @@ type Props = {
 };
 
 const CompleteTaskModal = ({ isOpen, task, onCancel, onCompleted }: Props) => {
-  const handleComplete = async () => {
-    if (!auth.currentUser) return;
 
+  const handleComplete = async () => {
+    if (!auth.currentUser || !task) return;
+  
     const userRef = doc(db, "users", auth.currentUser.uid);
     const userSnap = await getDoc(userRef);
-
+  
     if (userSnap.exists()) {
       const currentAffection = userSnap.data().affectionLevel || 1;
-      const newAffection = Math.min(currentAffection + 1, 6); // 最大5まで
-
+      const newAffection = Math.min(currentAffection + task.level, 6); // 難易度分だけ加算、最大6まで
+  
       await updateDoc(userRef, {
         affectionLevel: newAffection,
       });
     }
-
+  
     onCompleted(); // 完了処理呼び出し（タスク削除など）
   };
 
