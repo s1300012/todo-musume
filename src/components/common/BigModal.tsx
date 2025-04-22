@@ -1,6 +1,7 @@
 // src/components/common/Modal.tsx
 import { ReactNode, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import background from "../../assets/backgound/modal2.png";
 
 type ModalProps = {
   isOpen: boolean;
@@ -40,7 +41,8 @@ const BigModal = ({ isOpen, onClose, children }: ModalProps) => {
 
           {/* モーダル本体 */}
           <motion.div
-            className="relative bg-white rounded-lg p-6 w-full max-w-350 h-180 z-50"
+            className="relative bg-white rounded-lg  w-full max-w-350 h-180 z-50 bg-contain bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${background})` , backgroundSize: "100%"}} // 🔸ここを追加
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}

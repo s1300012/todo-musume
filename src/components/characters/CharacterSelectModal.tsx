@@ -35,9 +35,8 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
   return (
     <>
       <BigModal isOpen={isOpen} onClose={onClose}>
-        <div
-          className="p-2 rounded-xl shadow-lg w-full h-full">
-          <h1 className="text-3xl font-bold text-center mb-4">キャラ選択してね</h1>
+        <div className="rounded shadow-lg w-full h-full">
+          <h1 className="text-3xl font-bold text-center m-8">キャラ選択してね</h1>
           <div className="flex justify-around items-end gap-4">
           {charactersTop.map((char) => {
               const icon = selectIcons.find((icon) => icon.id === char.id);
