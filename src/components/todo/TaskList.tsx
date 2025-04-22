@@ -111,7 +111,7 @@ export default function TaskList() {
   return (
 <>
   {/* 📄 テーブルを囲む「紙」 */}
-  <div className="fixed top-20 bg-white rounded-xl shadow-lg p-8 w-[50%] max-w-5xl h-[85vh] overflow-hidden z-40">
+  <div className="fixed top-20 bg-white rounded-xl shadow-lg p-8 w-[50%] max-w-5xl h-[85vh] overflow-hidden ">
     <div className="flex flex-col sm:flex-row items-center justify-between px-4 pb-4">
       <h2 className="text-xl font-bold">あなたのタスク一覧</h2>
       <button
@@ -126,8 +126,8 @@ export default function TaskList() {
       {tasks.length === 0 ? (
         <p className="text-gray-500">まだタスクがありません。</p>
       ) : (
-        <table className="min-w-full text-sm border border-gray-300 rounded overflow-hidden ">
-          <thead className="bg-gray-100 text-left sticky top-0 z-10">
+        <table className="min-w-full text-sm border border-gray-300 rounded overflow-hidden">
+          <thead className="bg-gray-100 text-left sticky top-0 ">
             <tr>
               <th className="px-4 py-2 font-semibold">タスク名</th>
               <th

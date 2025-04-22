@@ -8,7 +8,7 @@ type ModalProps = {
   children: ReactNode;
 };
 
-const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+const BigModal = ({ isOpen, onClose, children }: ModalProps) => {
   // ESCキーで閉じる
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -23,7 +23,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
       {isOpen && (
         <motion.div
           key="modal-wrapper"
-          className="fixed inset-0 z-50 flex items-center justify-center"
+          className="fixed inset-0 z-30 flex items-center justify-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -40,19 +40,13 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
           {/* モーダル本体 */}
           <motion.div
-            className="relative bg-white rounded-lg p-6 w-full max-w-220 z-50"
+            className="relative bg-white rounded-lg p-6 w-full max-w-350 h-165 z-30"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()} // モーダル内クリックでは閉じない
           >
-            <button
-              onClick={onClose}
-              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
-            >
-              ✕
-            </button>
             {children}
           </motion.div>
         </motion.div>
@@ -61,4 +55,4 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default BigModal;
