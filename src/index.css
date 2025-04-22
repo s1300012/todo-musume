@@ -1,1 +1,28 @@
 @import 'tailwindcss';
+/* src/index.css など */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  @keyframes delayedFadein {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    20% { /* 約2秒経過時（2 / 7 ≒ 0.285） */
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-delayed-fadein {
+    animation: delayedFadein 7s ease-out forwards;
+  }
+}
+
