@@ -1,14 +1,16 @@
-import { characters } from "../../utils/constants/characters";
-import { useState, useEffect } from "react";
+import { charactersStand } from "../../utils/constants/characters";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../utils/firebase/firebase";
 import CharacterSelectModal from "./CharacterSelectModal";
 import { affectionImages } from "../../utils/constants/affections";
+import CharacterDetailModal from "./CharacterDetailModal";
 
-const CharacterDisplay = () => {
+const CharacterDisplay = forwardRef((props, ref) => {
   const [characterId, setCharacterId] = useState<number | null>(null);
   const [affectionLevel, setAffectionLevel] = useState<number>(1);
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
+  const [selectedDetailId, setSelectedDetailId] = useState<number | null>(null);
 
   const fetchCharacterData = async () => {
     if (!auth.currentUser) return;
@@ -16,10 +18,14 @@ const CharacterDisplay = () => {
     const snap = await getDoc(ref);
     if (snap.exists()) {
       const data = snap.data();
-      setCharacterId(data.characterId || 1);
-      setAffectionLevel(data.affectionLevel || 1);
+      setCharacterId(data.characterId || null);
+      setAffectionLevel(data.affectionLevel || null);
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    refreshCharacterData: fetchCharacterData,
+  }));
 
   useEffect(() => {
     fetchCharacterData();
@@ -34,9 +40,9 @@ const CharacterDisplay = () => {
     await fetchCharacterData(); // モーダルを閉じた後、最新のキャラと好感度を反映
   };
 
-  const character = characters.find((c) => c.id === characterId);
+  const character = charactersStand.find((c) => c.id === characterId);
   const affection = affectionImages.find((a) => a.id === affectionLevel);
-  const characterImage = character ? character.image : characters[1].image;
+  const characterImage = character ? character.image : charactersStand[1].image;
   const affectionMeterImage = affection ? affection.image : affectionImages[1].image;
   const message = character ? character.message : "おにいちゃん、がんばってね！";
 
@@ -49,11 +55,13 @@ const CharacterDisplay = () => {
           <img
             src={characterImage}
             alt={`キャラ${characterId}`}
-            className="max-h-[70vh] object-contain drop-shadow-xl"
+            className="max-h-[70vh] object-contain drop-shadow-xl cursor-pointer transition-all duration-300
+                     rounded-lg hover: hover:scale-105"
+            onClick={() => setSelectedDetailId(characterId)}
           />
 
           {/* 吹き出し（キャラの腰あたり） */}
-          <div className="absolute bottom-[300px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm text-gray-700 shadow-md z-20">
+          <div className="absolute bottom-[300px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm text-gray-700 shadow-md ">
             <div className="absolute -top-2 left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[10px] border-b-white" />
             <div>{message}</div>
           </div>
@@ -74,13 +82,19 @@ const CharacterDisplay = () => {
           className="w-24 h-full object-contain"
         />
       </div>
-
       <CharacterSelectModal
         isOpen={isSelectModalOpen}
         onClose={handleModalClose}
       />
+      {/* キャラ詳細モーダル */}
+      {selectedDetailId !== null && (
+        <CharacterDetailModal
+          characterId={selectedDetailId}
+          onClose={() => setSelectedDetailId(null)}
+        />
+      )}
     </div>
   );
-};
+});
 
 export default CharacterDisplay;

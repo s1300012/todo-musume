@@ -4,7 +4,7 @@ import CharacterConfirmModal from "./CharacterConfirmModal";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../utils/firebase/firebase";
-import { characters, Character } from "../../utils/constants/characters";
+import { charactersTop  } from "../../utils/constants/characters";
 
 type Props = {
   isOpen: boolean;
@@ -12,27 +12,27 @@ type Props = {
 };
 
 const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
-  const [selectedDetailChar, setSelectedDetailChar] = useState<Character | null>(null);
-  const [confirmingChar, setConfirmingChar] = useState<Character | null>(null);
+  const [selectedDetailId, setSelectedDetailId] = useState<number | null>(null);
+  const [confirmingCharId, setConfirmingCharId] = useState<number | null>(null);
 
-  const handleConfirmSelect = (char: Character) => {
-    setConfirmingChar(char);
+  const handleConfirmSelect = (id: number) => {
+    setConfirmingCharId(id);
   };
 
   const handleFinalSelect = async () => {
-    if (confirmingChar && auth.currentUser) {
+    if (confirmingCharId && auth.currentUser) {
       try {
         const ref = doc(db, "users", auth.currentUser.uid);
         await updateDoc(ref, {
-          characterId: confirmingChar.id,
+          characterId: confirmingCharId,
           affectionLevel: 1,
         });
-        console.log("キャラクター選択完了:", confirmingChar.name);
+        console.log("キャラクター選択完了:", confirmingCharId);
       } catch (err) {
         console.error("キャラクターの保存に失敗しました", err);
       }
-      setConfirmingChar(null);
-      setSelectedDetailChar(null);
+      setConfirmingCharId(null);
+      setSelectedDetailId(null);
       onClose();
     }
   };
@@ -40,32 +40,33 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
   return (
     <>
       <BigModal isOpen={isOpen} onClose={onClose}>
-        <div className="p-6 bg-white rounded-xl shadow-lg w-full h-full">
-          <h2 className="text-xl font-bold text-center mb-6">キャラ選択</h2>
+        <div
+          className="p-2 rounded-xl shadow-lg w-full h-full">
+          <h1 className="text-x3l font-bold text-center mb-4">キャラ選択してね</h1>
           <div className="flex justify-around items-end gap-4">
-          {characters.map((char) => (
-            <div key={char.id} className="flex flex-col items-center">
-                <img
-                  src={char.image}
-                  alt={char.name}
-                  className="w-60 h-90 object-contain rounded shadow"
-                />
-                <div className="text-lg font-semibold mb-2">{char.name}</div>
-                <div className="mt-2 space-x-2">
-                <button
-                  onClick={() => handleConfirmSelect(char)}
-                  className="border border-black bg-white text-black px-3 py-1 rounded hover:bg-gray-100 text-sm"
-                >
-                  選択
-                </button>
-                <button
-                  onClick={() => setSelectedDetailChar(char)}
-                  className="border border-gray-400 bg-white text-gray-700 px-3 py-1 rounded hover:bg-gray-100 text-sm"
-                >
-                  詳細
-                </button>
+            {charactersTop.map((char) => (
+              <div key={char.id} className="flex flex-col items-center">
+                <div className="relative">
+                  <img
+                    src={char.image}
+                    alt={char.name}
+                    onClick={() => handleConfirmSelect(char.id)}
+                    className={`w-80 h-120 object-contain cursor-pointer transition-all duration-300
+                      border-4 rounded-lg hover:border-blue-500 hover:shadow-lg hover:scale-105`}
+                  />
+                  {/* 各画像ごとの右上にアイコンボタン */}
+                  <button
+                    onClick={() => setSelectedDetailId(char.id)}
+                    className={`absolute -top-3 -right-3 bg-white border border-black rounded-full w-13 h-13 
+                      flex items-center justify-center text-sm cursor-pointer transition-all duration-300 
+                      hover:border-blue-500 hover:shadow-lg hover:scale-105`}
+                    title="詳細"
+                  >
+                    ⋮
+                  </button>
+                </div>
+                <div className="text-2xl font-semibold mt-5">{char.name}</div>
               </div>
-            </div>
             ))}
           </div>
           <div className="flex justify-center mt-6">
@@ -80,17 +81,21 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
       </BigModal>
 
       {/* キャラ詳細モーダル */}
-      <CharacterDetailModal
-        character={selectedDetailChar}
-        onClose={() => setSelectedDetailChar(null)}
-      />
+      {selectedDetailId !== null && (
+        <CharacterDetailModal
+          characterId={selectedDetailId}
+          onClose={() => setSelectedDetailId(null)}
+        />
+      )}
 
       {/* キャラ選択確認モーダル */}
-      <CharacterConfirmModal
-        character={confirmingChar}
-        onConfirm={handleFinalSelect}
-        onCancel={() => setConfirmingChar(null)}
-      />
+      {confirmingCharId !== null && (
+        <CharacterConfirmModal
+          characterId={confirmingCharId}
+          onConfirm={handleFinalSelect}
+          onCancel={() => setConfirmingCharId(null)}
+        />
+      )}
     </>
   );
 };

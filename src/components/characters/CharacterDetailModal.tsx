@@ -1,18 +1,19 @@
 import Modal from "../common/Modal";
+import { CharacterCard, charactersCard } from "../../utils/constants/characters";
 
-type Character = {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
+// キャラクターIDからキャラ情報を取得する関数
+const getCharacterCardById = (id: number): CharacterCard | undefined => {
+  return charactersCard.find((char) => char.id === id);
 };
 
 type Props = {
-  character: Character | null;
+  characterId: number;
   onClose: () => void;
 };
 
-const CharacterDetailModal = ({ character, onClose }: Props) => {
+const CharacterDetailModal = ({ characterId, onClose }: Props) => {
+  const character = getCharacterCardById(characterId);
+
   return (
     <Modal isOpen={!!character} onClose={onClose}>
       {character && (
@@ -26,12 +27,6 @@ const CharacterDetailModal = ({ character, onClose }: Props) => {
             <h3 className="text-2xl font-bold mb-4">{character.name}</h3>
             <p className="text-gray-700 mb-6">{character.description}</p>
             <div className="flex justify-end">
-              <button
-                onClick={onClose}
-                className="border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100"
-              >
-                閉じる
-              </button>
             </div>
           </div>
         </div>

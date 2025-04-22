@@ -49,7 +49,9 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           >
             <button
               onClick={onClose}
-              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+              className={`absolute -top-3 -right-3 bg-gray-300 border border-black rounded-full w-13 h-13 
+                flex items-center justify-center text-sm cursor-pointer transition-all duration-300 
+                hover:border-blue-500 hover:shadow-lg hover:scale-105`}
             >
               ✕
             </button>

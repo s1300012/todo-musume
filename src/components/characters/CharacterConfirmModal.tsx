@@ -1,16 +1,18 @@
 import Modal from "../common/Modal";
+import { CharacterCard, charactersCard } from "../../utils/constants/characters";
+// キャラクターIDからキャラ情報を取得する関数
+const getCharacterCardById = (id: number): CharacterCard | undefined => {
+  return charactersCard.find((char) => char.id === id);
+};
 
 type Props = {
-  character: {
-    id: number;
-    name: string;
-    image: string;
-  } | null;
+  characterId: number;
   onConfirm: () => void;
   onCancel: () => void;
 };
 
-const CharacterConfirmModal = ({ character, onConfirm, onCancel }: Props) => {
+const CharacterConfirmModal = ({ characterId, onConfirm, onCancel }: Props) => {
+  const character = getCharacterCardById(characterId);
   return (
     <Modal isOpen={!!character} onClose={onCancel}>
       {character && (
@@ -32,12 +34,6 @@ const CharacterConfirmModal = ({ character, onConfirm, onCancel }: Props) => {
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
             >
               はい
-            </button>
-            <button
-              onClick={onCancel}
-              className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
-            >
-              いいえ
             </button>
           </div>
         </div>
