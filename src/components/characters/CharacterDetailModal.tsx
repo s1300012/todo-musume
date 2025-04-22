@@ -7,15 +7,16 @@ const getCharacterCardById = (id: number): CharacterCard | undefined => {
 };
 
 type Props = {
+  isOpen: boolean;
   characterId: number;
   onClose: () => void;
 };
 
-const CharacterDetailModal = ({ characterId, onClose }: Props) => {
+const CharacterDetailModal = ({ isOpen, characterId, onClose }: Props) => {
   const character = getCharacterCardById(characterId);
 
   return (
-    <Modal isOpen={!!character} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       {character && (
         <div className="flex flex-col sm:flex-row p-6 bg-white rounded-xl shadow-lg max-w-full mx-auto">
           <img

@@ -8,7 +8,7 @@ import CharacterDetailModal from "./CharacterDetailModal";
 
 const CharacterDisplay = forwardRef((props, ref) => {
   const [characterId, setCharacterId] = useState<number | null>(null);
-  const [affectionLevel, setAffectionLevel] = useState<number>(1);
+  const [affectionLevel, setAffectionLevel] = useState<number>();
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
   const [selectedDetailId, setSelectedDetailId] = useState<number | null>(null);
 
@@ -42,30 +42,31 @@ const CharacterDisplay = forwardRef((props, ref) => {
 
   const character = charactersStand.find((c) => c.id === characterId);
   const affection = affectionImages.find((a) => a.id === affectionLevel);
-  const characterImage = character ? character.image : charactersStand[1].image;
-  const affectionMeterImage = affection ? affection.image : affectionImages[1].image;
+  const characterImage = character ? character.image : null;
+  const affectionMeterImage = affection ? affection.image : null;
   const message = character ? character.message : "おにいちゃん、がんばってね！";
 
   return (
-    <div className="fixed right-0 top-0 h-full w-1/2 bg-gradient-to-br from-pink-50 to-blue-50 flex flex-col items-center justify-center p-4 shadow-inner">
+    <div className="fixed right-0 top-0 h-full w-1/2 bg-gradient-to-br to-blue-50 flex flex-col items-center justify-center p-4 shadow-inner">
       {/* キャラとメーター */}
       <div className="relative flex justify-center items-end gap-10 w-full pt-[50px]">
         {/* キャラとボタン */}
         <div className="flex flex-col items-center relative">
-          <img
-            src={characterImage}
-            alt={`キャラ${characterId}`}
-            className="max-h-[70vh] object-contain drop-shadow-xl cursor-pointer transition-all duration-300
-                     rounded-lg hover: hover:scale-105"
-            onClick={() => setSelectedDetailId(characterId)}
-          />
-
-          {/* 吹き出し（キャラの腰あたり） */}
-          <div className="absolute bottom-[300px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm text-gray-700 shadow-md ">
-            <div className="absolute -top-2 left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[10px] border-b-white" />
-            <div>{message}</div>
-          </div>
-
+          {characterId &&
+          <> 
+            <img
+              src={characterImage!}
+              alt={`キャラ${characterId}`}
+              className="max-h-[70vh] object-contain drop-shadow-xl cursor-pointer transition-all duration-300
+                      rounded-lg hover: hover:scale-105"
+              onClick={() => setSelectedDetailId(characterId)}
+            />
+            <div className="absolute bottom-[300px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm text-gray-700 shadow-md ">
+              <div className="absolute -top-2 left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[10px] border-b-white" />
+              <div>{message}</div>
+            </div>
+          </>
+          }
           {/* キャラ選択ボタン */}
           <button
             onClick={handleSelectCharacter}
@@ -76,23 +77,22 @@ const CharacterDisplay = forwardRef((props, ref) => {
         </div>
 
         {/* 好感度メーター */}
-        <img
-          src={affectionMeterImage}
+        {affectionLevel && <img
+          src={affectionMeterImage!}
           alt={`好感度: ${affectionLevel}`}
           className="w-24 h-full object-contain"
-        />
+        />}
       </div>
       <CharacterSelectModal
         isOpen={isSelectModalOpen}
         onClose={handleModalClose}
       />
       {/* キャラ詳細モーダル */}
-      {selectedDetailId !== null && (
-        <CharacterDetailModal
-          characterId={selectedDetailId}
-          onClose={() => setSelectedDetailId(null)}
-        />
-      )}
+      <CharacterDetailModal
+        isOpen={selectedDetailId !== null}
+        characterId={selectedDetailId!}
+        onClose={() => setSelectedDetailId(null)}
+      />
     </div>
   );
 });
