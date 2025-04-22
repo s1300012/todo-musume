@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import {
   collection,
   query,
@@ -23,7 +23,11 @@ type Task = {
   content: string;
 };
 
-export default function TaskList() {
+type Props = {
+  characterDisplayRef: RefObject<{ refreshCharacterData: () => void } | null>;
+};
+
+export default function TaskList({ characterDisplayRef }: Props) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [openAddingTask, setOpenAddingTask] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -91,6 +95,7 @@ export default function TaskList() {
     try {
       await deleteDoc(doc(db, "todos", completeTask.id));
       setCompleteTask(null);
+      characterDisplayRef.current?.refreshCharacterData();
     } catch (err) {
       console.error("削除エラー:", err);
       alert("削除に失敗しました");
@@ -124,7 +129,9 @@ export default function TaskList() {
     {/* 📜 スクロールするテーブル */}
     <div className="h-[70vh] overflow-auto pt-2">
       {tasks.length === 0 ? (
-        <p className="text-gray-500">まだタスクがありません。</p>
+        <div className="flex justify-center items-center h-full">
+          <p className="text-gray-500 text-3xl">まだタスクがありません。</p>
+        </div>
       ) : (
         <table className="min-w-full text-sm border border-gray-300 rounded overflow-hidden">
           <thead className="bg-gray-100 text-left sticky top-0 ">

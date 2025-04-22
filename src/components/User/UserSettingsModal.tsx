@@ -41,13 +41,24 @@ const UserSettingsModal = ({ isOpen, onClose, onSaved}: Props) => {
 
   const handleSave = async () => {
     if (!auth.currentUser || !validate()) return;
+  
     const ref = doc(db, "users", auth.currentUser.uid);
-    await setDoc(ref, {
-      name,
-      gender,
-    });
-    onSaved();
-    onClose();
+  
+    try {
+      await setDoc(
+        ref,
+        {
+          name,
+          gender,
+        },
+        { merge: true } // 🔑 既存の他のフィールドを保持
+      );
+      onSaved(); // ✅ 保存後コールバック
+      onClose();
+    } catch (error) {
+      console.error("ユーザー情報の保存に失敗しました:", error);
+      alert("保存に失敗しました。もう一度お試しください。");
+    }
   };
 
   return (

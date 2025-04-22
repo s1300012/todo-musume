@@ -40,7 +40,7 @@ const AppHeader = ({ user }: Props) => {
 
   return (
     <>
-      <header className="fixed top-0 w-full bg-gray-800 text-white px-6 py-3 shadow-md z-50">
+      <div className="fixed top-0 w-full bg-gray-800 text-white px-6 py-1 shadow-md z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-3">
             {user.photoURL && (
@@ -55,19 +55,19 @@ const AppHeader = ({ user }: Props) => {
           <div className="flex gap-10">
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-1 rounded"
             >
               ユーザー設定
             </button>
             <button
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded"
+              className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded"
             >
               ログアウト
             </button>
           </div>
         </div>
-      </header>
+      </div>
       <UserSettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}

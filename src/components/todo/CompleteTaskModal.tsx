@@ -1,14 +1,7 @@
 import Modal from "../common/Modal";
-
-type Task = {
-  id: string;
-  title: string;
-  dueDate: string;
-  dueTime: string;
-  color: string;
-  level: number;
-  content: string;
-};
+import { Task } from "../../utils/constants/task";
+import { auth, db } from "../../utils/firebase/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 type Props = {
   isOpen: boolean;
@@ -18,6 +11,24 @@ type Props = {
 };
 
 const CompleteTaskModal = ({ isOpen, task, onCancel, onCompleted }: Props) => {
+  const handleComplete = async () => {
+    if (!auth.currentUser) return;
+
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const currentAffection = userSnap.data().affectionLevel || 1;
+      const newAffection = Math.min(currentAffection + 1, 6); // 最大5まで
+
+      await updateDoc(userRef, {
+        affectionLevel: newAffection,
+      });
+    }
+
+    onCompleted(); // 完了処理呼び出し（タスク削除など）
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onCancel}>
       <div className="text-center space-y-6">
@@ -36,7 +47,7 @@ const CompleteTaskModal = ({ isOpen, task, onCancel, onCompleted }: Props) => {
                 </p>
                 <p>
                   <span className="font-semibold">期限: </span>
-                  <span>{task.dueDate} {"  "} {task.dueTime && ` ${task.dueTime}`}</span>
+                  <span>{task.dueDate}{" "}{task.dueTime && ` ${task.dueTime}`}</span>
                 </p>
                 <p>
                   <span className="font-semibold">レベル:</span> {task.level}
@@ -45,9 +56,10 @@ const CompleteTaskModal = ({ isOpen, task, onCancel, onCompleted }: Props) => {
             </div>
           </div>
         )}
+
         <div className="flex justify-center space-x-4">
           <button
-            onClick={onCompleted}
+            onClick={handleComplete}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
             完了
