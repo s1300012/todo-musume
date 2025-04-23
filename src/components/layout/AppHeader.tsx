@@ -40,7 +40,7 @@ const AppHeader = ({ user }: Props) => {
 
   return (
     <>
-      <div className="fixed top-0 w-full bg-gray-800 text-white px-6 py-1 shadow-md z-10">
+      <div className="fixed top-0 w-full bg-gray-800 text-white px-6 py-1 shadow-md z-20">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-3">
             {user.photoURL && (

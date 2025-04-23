@@ -5,6 +5,7 @@ import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../utils/firebase/firebase";
 import { charactersTop, selectIcons  } from "../../utils/constants/characters";
+import CharacterSelectMovieModal from "../movie/CharacterSelectMovieModal";
 
 type Props = {
   isOpen: boolean;
@@ -14,24 +15,26 @@ type Props = {
 const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
   const [selectedDetailId, setSelectedDetailId] = useState<number | null>(null);
   const [confirmingCharId, setConfirmingCharId] = useState<number | null>(null);
-
+  const [showMovieModal, setshowMovieModal] = useState(false);
+  
   const handleFinalSelect = async () => {
-    if (confirmingCharId && auth.currentUser) {
-      try {
-        const ref = doc(db, "users", auth.currentUser.uid);
-        await updateDoc(ref, {
-          characterId: confirmingCharId,
-          affectionLevel: 1,
-        });
-        console.log("キャラクター選択完了:", confirmingCharId);
-      } catch (err) {
-        console.error("キャラクターの保存に失敗しました", err);
-      }
-      setConfirmingCharId(null);
-      setSelectedDetailId(null);
-      onClose();
+    if (!auth.currentUser || !confirmingCharId) return;
+  
+    try {
+      const ref = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(ref, {
+        characterId: confirmingCharId,
+        affectionLevel: 1,
+      });
+      console.log("キャラクター選択完了:", confirmingCharId);
+    } catch (err) {
+      console.error("キャラクターの保存に失敗しました", err);
     }
+    setshowMovieModal(true);
   };
+  
+  
+
   return (
     <>
       <BigModal isOpen={isOpen} onClose={onClose}>
@@ -85,9 +88,23 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
       {/* キャラ選択確認モーダル */}
       <CharacterConfirmModal
         characterId={confirmingCharId!}
-        onConfirm={handleFinalSelect}
+        onConfirm={() => {
+          handleFinalSelect();
+        }}
         onCancel={() => setConfirmingCharId(null)}
       />
+
+      {showMovieModal && (
+      <CharacterSelectMovieModal
+        isOpen={showMovieModal}
+        onClose={() => {
+          setshowMovieModal(false);
+          setConfirmingCharId(null);
+          onClose();
+        }}
+        characterId={confirmingCharId!}
+      />
+      )}
     </>
   );
 };
