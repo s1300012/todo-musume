@@ -93,7 +93,7 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
         }}
         onCancel={() => setConfirmingCharId(null)}
       />
-
+      {/* キャラクター紹介映像モーダル */}
       {showMovieModal && (
       <CharacterSelectMovieModal
         isOpen={showMovieModal}

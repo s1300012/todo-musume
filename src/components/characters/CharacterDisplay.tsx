@@ -6,7 +6,12 @@ import CharacterSelectModal from "./CharacterSelectModal";
 import { affectionImages } from "../../utils/constants/affections";
 import CharacterDetailModal from "./CharacterDetailModal";
 
-const CharacterDisplay = forwardRef((props, ref) => {
+type Props = {
+  onCharacterSelected?: () => void;
+};
+
+const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>(
+  ({ onCharacterSelected }, ref) => {
   const [characterId, setCharacterId] = useState<number | null>(null);
   const [affectionLevel, setAffectionLevel] = useState<number>();
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
@@ -38,6 +43,7 @@ const CharacterDisplay = forwardRef((props, ref) => {
   const handleModalClose = async () => {
     setIsSelectModalOpen(false);
     await fetchCharacterData(); // モーダルを閉じた後、最新のキャラと好感度を反映
+    onCharacterSelected?.();
   };
 
   const character = charactersStand.find((c) => c.id === characterId);
@@ -53,7 +59,7 @@ const CharacterDisplay = forwardRef((props, ref) => {
         {/* キャラとボタン */}
         <div className="flex flex-col items-center relative">
           {characterId &&
-          <> 
+          <>
             <img
               src={characterImage!}
               alt={`キャラ${characterId}`}

@@ -14,6 +14,7 @@ import DeleteTaskModal from "./DeleteTaskModal";
 import EditTaskModal from "./EditTaskModal";
 import AddTaskModal from "./AddTaskModal";
 import CompleteTaskModal from "./CompleteTaskModal";
+import RetireMovieModal from "../movie/RetireMovieModal";
 
 type Task = {
   id: string;
@@ -27,9 +28,10 @@ type Task = {
 
 type Props = {
   characterDisplayRef: RefObject<{ refreshCharacterData: () => void } | null>;
+  characterUpdatedAt: number; // 💡追加
 };
 
-export default function TaskList({ characterDisplayRef }: Props) {
+export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Props) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [openAddingTask, setOpenAddingTask] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -37,27 +39,41 @@ export default function TaskList({ characterDisplayRef }: Props) {
   const [completeTask, setCompleteTask] = useState<Task | null>(null);
   const [sortKey, setSortKey] = useState<"dueDate" | "level" | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
+  const [showMovieModal, setshowMovieModal] = useState(false);
+  const [characterId, setCharacterId] = useState(null);
 
   useEffect(() => {
     if (!auth.currentUser) return;
-
+    const user = auth.currentUser;
+    if (!user) return;
+  
+    const fetchCharacterId = async () => {
+      const ref = doc(db, "users", user.uid);
+      const snap = await getDoc(ref);
+      const data = snap.data();
+      if (data) {
+        setCharacterId(data.characterId || null);
+      }
+    };
+    fetchCharacterId();
+  
     const q = query(
       collection(db, "todos"),
       where("userId", "==", auth.currentUser.uid)
     );
-
+  
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const results: Task[] = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       })) as Task[];
-
+  
       setTasks(results);
     });
-
+  
     return () => unsubscribe();
-  }, []);
+  }, [characterUpdatedAt]);
+  
 
   const sortedTasks = [...tasks].sort((a, b) => {
     if (!sortKey) return 0;
@@ -233,8 +249,16 @@ export default function TaskList({ characterDisplayRef }: Props) {
   <AddTaskModal isOpen={openAddingTask} onCancel={() => setOpenAddingTask(false)} onAdded={() => setOpenAddingTask(false)} />
   <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => setEditingTask(null)} onUpdated={() => setEditingTask(null)} />
   <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={handleComplete} />
-  <DeleteTaskModal isOpen={!!selectedTask} task={selectedTask} onCancel={() => setSelectedTask(null)} onConfirm={handleDelete} />
+  <DeleteTaskModal 
+    isOpen={!!selectedTask}
+    task={selectedTask}
+    onCancel={() => setSelectedTask(null)}
+    onConfirm={() => { // アニメーション後に表示
+      handleDelete()
+      setshowMovieModal(true);
+    }}
+  />
+  <RetireMovieModal isOpen={showMovieModal} characterId={characterId!} onClose={() => setshowMovieModal(false)}/>
 </>
-
   );
 }
