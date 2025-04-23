@@ -47,7 +47,7 @@ const CharacterDisplay = forwardRef((props, ref) => {
   const message = character ? character.message : "おにいちゃん、がんばってね！";
 
   return (
-    <div className="fixed right-0 top-0 h-full w-1/2 bg-gradient-to-br to-blue-50 flex flex-col items-center justify-center p-4 shadow-inner">
+    <div className="fixed right-0 top-0 h-full w-1/2 bg-gradient-to-br to-blue-50 flex flex-col items-center justify-center p-4 shadow-inner z-10">
       {/* キャラとメーター */}
       <div className="relative flex justify-center items-end gap-10 w-full pt-[50px]">
         {/* キャラとボタン */}
