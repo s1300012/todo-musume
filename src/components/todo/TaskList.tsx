@@ -17,7 +17,7 @@ import CompleteTaskModal from "./CompleteTaskModal";
 import RetireMovieModal from "../movie/RetireMovieModal";
 import { playSE } from "../../utils/music/soundPlayer";
 import { clickDetail, clickSound, closeButton, sortSound } from "../../utils/music/musicContents";
-import background from "../../assets/backgound/tasklist.jpg"
+import background from "../../assets/backgound/tasklist.png"
 
 type Task = {
   id: string;
@@ -204,7 +204,7 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
               >
                 <td className="p-3 flex items-center space-x-2">
                   <div
-                    className="w-4 h-4 rounded-full"
+                    className="w-4 h-4 rounded-full pr-1"
                     style={{ backgroundColor: task.color }}
                   />
                   <span>{task.title}</span>

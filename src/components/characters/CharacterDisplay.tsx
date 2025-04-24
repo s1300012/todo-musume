@@ -58,40 +58,43 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
   return (
     <div className="fixed right-0 top-12 h-full w-1/2 flex flex-col  z-20">
       {/* キャラとメーター */}
-      <div className="relative flex justify-center items-end gap-10 w-full pt-[50px]">
-        {/* キャラとボタン */}
+      <div className="relative flex justify-center items-center w-full pt-[50px]">
+        {characterId &&
+        <>
+          <img
+            src={characterImage!}
+            alt={`キャラ${characterId}`}
+            className="max-h-[70vh] object-contain drop-shadow-xl cursor-pointer transition-all duration-300
+                    rounded-lg hover:scale-105"
+            onClick={() => {playSE(clickSound); setSelectedDetailId(characterId)}}
+            onMouseEnter={() => playSE(selectSound)}
+          />
+          <div className="fixed bg-black/30 left-195 text-white p-6 top-150 rounded-xl text-lg w-100  text-center backdrop-blur-sm">
+            <div>{message}</div>
+          </div>
+        </>
+        }
+        {/* メーターとボタン */}
         <div className="flex flex-col items-center relative">
-          {characterId &&
-          <>
-            <img
-              src={characterImage!}
-              alt={`キャラ${characterId}`}
-              className="max-h-[70vh] object-contain drop-shadow-xl cursor-pointer transition-all duration-300
-                      rounded-lg hover:scale-105"
-              onClick={() => {playSE(clickSound); setSelectedDetailId(characterId)}}
-              onMouseEnter={() => playSE(selectSound)}
-            />
-            <div className="absolute bottom-[300px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm text-gray-700 shadow-md ">
-              <div className="absolute -top-2 left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[10px] border-b-white" />
-              <div>{message}</div>
-            </div>
-          </>
-          }
           {/* キャラ選択ボタン */}
           <button
-            onClick={() => {playSE(clickSound); handleSelectCharacter();}}
-            className="mt-4 border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100 cursor-pointer hover: hover:scale-105"
+            onClick={() => {
+              playSE(clickSound);
+              handleSelectCharacter();
+            }}
+            className="px-8 py-4 rounded-full bg-pink-400 text-white font-semibold text-lg tracking-wide shadow-md
+                      hover:bg-pink-500 hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out
+                      border-2 border-white/60 backdrop-blur-md"
           >
-            キャラ選択
+            💖 キャラ選択 💖
           </button>
-        </div>
-
         {/* 好感度メーター */}
         {affectionLevel && <img
           src={affectionMeterImage!}
           alt={`好感度: ${affectionLevel}`}
-          className="w-24 h-full object-contain"
+          className="w-30 h-full object-contain"
         />}
+                </div>
       </div>
       <CharacterSelectModal
         isOpen={isSelectModalOpen}

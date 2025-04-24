@@ -18,7 +18,7 @@ const CharacterDetailModal = ({ isOpen, characterId, onClose }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       {character && (
-        <div className="flex flex-col sm:flex-row p-6 bg-white rounded-xl shadow-lg max-w-full mx-auto">
+        <div className="flex flex-col sm:flex-row p-6 rounded-xl max-w-full mx-auto">
           <img
             src={character.image}
             alt={character.name}

@@ -1,5 +1,7 @@
 import Modal from "../common/Modal";
 import { CharacterCard, charactersCard } from "../../utils/constants/characters";
+import { playSE } from "../../utils/music/soundPlayer";
+import { completeSound } from "../../utils/music/musicContents";
 // キャラクターIDからキャラ情報を取得する関数
 const getCharacterCardById = (id: number): CharacterCard | undefined => {
   return charactersCard.find((char) => char.id === id);
@@ -16,7 +18,7 @@ const CharacterConfirmModal = ({ characterId, onConfirm, onCancel }: Props) => {
   return (
     <Modal isOpen={!!character} onClose={onCancel}>
       {character && (
-        <div className="p-6 bg-white rounded-xl shadow-lg max-w-full mx-auto text-center space-y-4">
+        <div className="p-6 rounded-xl max-w-full mx-auto text-center space-y-4">
           <img
             src={character.image}
             alt={character.name}
@@ -30,8 +32,8 @@ const CharacterConfirmModal = ({ characterId, onConfirm, onCancel }: Props) => {
           </p>
           <div className="flex justify-center gap-4 mt-4">
             <button
-              onClick={onConfirm}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              onClick={() => {playSE(completeSound); onConfirm()}}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 hover:scale-105 duration-300"
             >
               はい
             </button>
