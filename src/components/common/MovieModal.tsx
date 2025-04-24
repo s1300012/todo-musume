@@ -15,6 +15,7 @@ const MovieModal = ({ isOpen, onClose, voice, children, image }: MovieModalProps
 
   const allLines = Array.isArray(children) ? children : [children];
   const isLastLine = currentLine + 1 >= allLines.length;
+  
 
   const advanceText = useCallback(() => {
     if (isLastLine) {
@@ -53,7 +54,7 @@ const MovieModal = ({ isOpen, onClose, voice, children, image }: MovieModalProps
       {isOpen && (
         <motion.div
           key="modal-wrapper"
-          className="fixed inset-0 flex items-center justify-center pt-6 z-50"
+          className="fixed inset-0 flex items-center justify-center z-50"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -67,7 +68,7 @@ const MovieModal = ({ isOpen, onClose, voice, children, image }: MovieModalProps
           />
 
           <motion.div
-            className="relative w-full max-w-350 h-180  bg-gray-800 rounded-lg p-4 flex flex-col items-center justify-center z-50 overflow-hidden"
+            className="relative w-full max-w-280 h-[87vh]  bg-black rounded-lg flex flex-col items-center justify-center z-50 overflow-hidden"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}

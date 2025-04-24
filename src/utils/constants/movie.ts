@@ -9,13 +9,14 @@ import chara1_100_2 from "../../assets/charamovies/character1/御影心愛-100-�
 import chara2_40 from "../../assets/charamovies/character2/ソフィア-20,40-立ち絵.png"
 import chara2_60_1 from "../../assets/charamovies/character2/ソフィア-60-カフェ-鋭い眼光.png"
 import chara2_60_2 from "../../assets/charamovies/character2/ソフィア-60-カフェ-あそこに違和感.png"
-import chara2_60_3 from "../../assets/charamovies/character2/ソフィア-60-初めてのフェラ.png"
+import chara2_60_3 from "../../assets/charamovies/character2/ソフィア-60-コーヒー苦い.png"
 import chara2_80_1 from "../../assets/charamovies/character2/ソフィア-80-夜景-告白大作戦.png"
 import chara2_80_2 from "../../assets/charamovies/character2/ソフィア-80-夜景-告白大成功.png"
 import chara2_100_1 from "../../assets/charamovies/character2/ソフィア-100-ベッド-恥ずかしい.png"
-import chara2_100_2 from "../../assets/charamovies/character2/ソフィア-100-ベッド-大きなイチモツに驚愕.png"
-import chara2_100_3 from "../../assets/charamovies/character2/ソフィア-100-ベッド-大きなイチモツ挿入.png"
-import chara2_100_4 from "../../assets/charamovies/character2/ソフィア-100-ベッド-イくまであと5秒.png"
+import chara2_100_2 from "../../assets/charamovies/character2/白鷺ソフィア-100-全部あなたに委ねる略して全部あなる.png"
+import chara2_100_3 from "../../assets/charamovies/character2/ソフィア-100-ベッド-大きなイチモツに驚愕.png"
+import chara2_100_4 from "../../assets/charamovies/character2/ソフィア-100-ベッド-大きなイチモツ挿入.png"
+import chara2_100_5 from "../../assets/charamovies/character2/ソフィア-100-ベッド-イくまであと5秒.png"
 
 import chara3_40 from "../../assets/charamovies/character3/東雲懐季-20.40-バンザイ.png"
 import chara3_60_1 from "../../assets/charamovies/character3/東雲懐季-60-むすっと生理パンパンツマン.png"
@@ -187,10 +188,15 @@ export type MovieChara = {
     },
     { id: 12, scene: "5-3", characterId: 2, affectionlevel: 6, image: chara2_100_3, voice: "",
         words: [
-            "緊張するね...💕",
+            "緊張するね...",
         ]
     },
-    { id: 13, scene: "5-4", characterId: 2, affectionlevel: 6, image: chara2_100_4, voice: chara2_100_M,
+    { id: 13, scene: "5-4", characterId: 2, affectionlevel: 6, image: chara2_100_4, voice: "",
+        words: [
+            "username。",
+        ]
+    },
+    { id: 14, scene: "5-5", characterId: 2, affectionlevel: 6, image: chara2_100_5, voice: chara2_100_M,
         words: [
             "я тебя люблю(愛してる）",
         ]

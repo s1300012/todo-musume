@@ -20,9 +20,9 @@ export type CharacterStand = {
 };
 
 export const charactersStand: CharacterStand[] = [
-  { id: 1, name: "御影心愛", image: character1, message: "死になさい！"},
-  { id: 2, name: "白鷺ソフィア", image: character2, message: "見るなバカ"},
-  { id: 3, name: "東雲懐季", image: character3, message: "おにいちゃん、がんばってね！"},
+  { id: 1, name: "御影心愛", image: character1, message: "サボってないで！ほら、早く！"},
+  { id: 2, name: "白鷺ソフィア", image: character2, message: "次は何をするの？"},
+  { id: 3, name: "東雲懐季", image: character3, message: "がんばれ！がんばれ〜！"},
 ];
 
 export type CharacterCard = {
