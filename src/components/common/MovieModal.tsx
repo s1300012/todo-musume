@@ -1,14 +1,16 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { playSE } from "../../utils/music/soundPlayer";
 
 export type MovieModalProps = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
   image?: string;
+  voice?: string;
 };
 
-const MovieModal = ({ isOpen, onClose, children, image }: MovieModalProps) => {
+const MovieModal = ({ isOpen, onClose, voice, children, image }: MovieModalProps) => {
   const [currentLine, setCurrentLine] = useState(0);
 
   const allLines = Array.isArray(children) ? children : [children];
@@ -30,6 +32,12 @@ const MovieModal = ({ isOpen, onClose, children, image }: MovieModalProps) => {
     }
   }, [advanceText, onClose]);
   
+  useEffect(() => {
+    if (isOpen && voice) {
+      playSE(voice);
+    }
+  }, [isOpen, voice]);
+
   useEffect(() => {
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
