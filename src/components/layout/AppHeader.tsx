@@ -1,11 +1,11 @@
 import { User } from "firebase/auth";
-import { logout } from "../../utils/firebase/logout";
 import UserSettingsModal from "../User/UserSettingsModal";
 import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase/firebase";
 import { playSE } from "../../utils/music/soundPlayer";
 import { clickSound } from "../../utils/music/musicContents";
+import LogoutModal from "../User/LogoutModal";
 
 type Props = {
   user: User;
@@ -14,14 +14,9 @@ type Props = {
 const AppHeader = ({ user }: Props) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [userName, setUserName] = useState<string>("");
+  const [showLogout, setShowLogout] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (err) {
-      console.error("ログアウト失敗:", err);
-    }
-  };
+
 
   // useEffect の外に出して再利用可能にする
   const fetchUserName = async () => {
@@ -62,7 +57,7 @@ const AppHeader = ({ user }: Props) => {
               ユーザー設定
             </button>
             <button
-              onClick={() => {playSE(clickSound); handleLogout();}}
+              onClick={() => {playSE(clickSound); setShowLogout(true);}}
               className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded cursor-pointer hover:scale-105 duration-300"
             >
               ログアウト
@@ -78,6 +73,7 @@ const AppHeader = ({ user }: Props) => {
           setIsSettingsOpen(false);
         }}
       />
+      <LogoutModal isOpen={showLogout} onClose={() => setShowLogout(false)} />
     </>
   );
 };
