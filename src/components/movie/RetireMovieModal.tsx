@@ -6,7 +6,6 @@ import { doc, getDoc } from "firebase/firestore";
 
 type Props = {
   isOpen: boolean;
-  level: number;
   characterId: number;
   onClose: () => void;
 };

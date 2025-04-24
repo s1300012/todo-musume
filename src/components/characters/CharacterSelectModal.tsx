@@ -95,8 +95,10 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
         characterId={confirmingCharId!}
         onConfirm={() => {
           handleFinalSelect();
-          const greet = greets.find((g) => g.id ===confirmingCharId);
-          playSE(greet?.music);
+          const greet = greets.find((g) => g.id === confirmingCharId);
+          if (greet?.music) {
+            playSE(greet.music);
+          }
         }}
         onCancel={() => {playSE(closeButton); setConfirmingCharId(null);}}
       />
