@@ -6,6 +6,9 @@ import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../utils/firebase/firebase";
 import { charactersTop, selectIcons  } from "../../utils/constants/characters";
 import CharacterSelectMovieModal from "../movie/CharacterSelectMovieModal";
+import { playSE } from "../../utils/music/soundPlayer";
+import { selectSound, clickSound, closeButton } from "../../utils/music/musicContents";
+import { greets } from "../../utils/music/charaSE";
 
 type Props = {
   isOpen: boolean;
@@ -39,7 +42,7 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
     <>
       <BigModal isOpen={isOpen} onClose={onClose}>
         <div className="rounded shadow-lg w-full h-full">
-          <h1 className="text-3xl font-bold text-center m-8">キャラ選択してね</h1>
+          <h1 className="text-5xl font-bold text-center mt-5 mb-10">３人の中からキャラクターを選んでね</h1>
           <div className="flex justify-around items-end gap-4">
           {charactersTop.map((char) => {
               const icon = selectIcons.find((icon) => icon.id === char.id);
@@ -48,7 +51,8 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
                   <img
                     src={char.image}
                     alt={char.name}
-                    onClick={() => setConfirmingCharId(char.id)}
+                    onClick={() => {playSE(clickSound); setConfirmingCharId(char.id)}}
+                    onMouseEnter={() => playSE(selectSound)}
                     className={`
                       w-80 h-120 object-contain cursor-pointer transition-all duration-300
                       border-4 rounded-lg hover:border-red-500 hover:shadow-lg hover:scale-105
@@ -56,14 +60,15 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
                   />
                   {icon && (
                     <button
-                      onClick={() => setSelectedDetailId(char.id)}
+                      onClick={() => {playSE(clickSound); setSelectedDetailId(char.id)}}
+                      onMouseEnter={() => playSE(selectSound)}
                       className="absolute -top-7 -right-7 border-gray-300  rounded-full border border-transparentborder 
-                          hover:scale-120 hover:border-red-500 duration-300 hover:border-[3px] "
+                          hover:scale-120 hover:border-red-500 hover:border-[3px]"
                     >
                       <img src={icon.image} alt="詳細" className="w-20 h-20" />
                     </button>
                   )}
-                  <div className="text-lg font-semibold mb-2 mt-2">{char.name}</div>
+                  <div className="text-3xl mb-2 mt-2">{char.name}</div>
                 </div>
               );
             })}
@@ -71,7 +76,7 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
           <div className="flex justify-center mt-6">
             <button
               onClick={onClose}
-              className="border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100"
+              className="border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100 hover:scale-105 duration-300"
             >
               戻る
             </button>
@@ -83,15 +88,17 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
       <CharacterDetailModal
         characterId={selectedDetailId!}
         isOpen={!!selectedDetailId}
-        onClose={() =>  setSelectedDetailId(null)}
+        onClose={() =>  {playSE(closeButton); setSelectedDetailId(null)}}
       />
       {/* キャラ選択確認モーダル */}
       <CharacterConfirmModal
         characterId={confirmingCharId!}
         onConfirm={() => {
           handleFinalSelect();
+          const greet = greets.find((g) => g.id ===confirmingCharId);
+          playSE(greet?.music);
         }}
-        onCancel={() => setConfirmingCharId(null)}
+        onCancel={() => {playSE(closeButton); setConfirmingCharId(null);}}
       />
       {/* キャラクター紹介映像モーダル */}
       {showMovieModal && (

@@ -28,9 +28,6 @@ const MovieModal = ({ isOpen, onClose, children, image }: MovieModalProps) => {
       onClose();
       setCurrentLine(0);
     }
-    if (e.key === "Enter") {
-      advanceText();
-    }
   }, [advanceText, onClose]);
   
   useEffect(() => {

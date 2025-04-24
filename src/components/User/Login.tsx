@@ -2,10 +2,14 @@ import { auth, db } from '../../utils/firebase/firebase'; // ← db を含める
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { signInWithGoogle } from '../../utils/firebase/firebaseAuth'
 import affection1 from '../../assets/backgound/title.png'
+import { useEffect } from 'react';
+import { onSound, playSE } from '../../utils/music/soundPlayer';
+import { clickSound, selectSound, titleBGM, titleCall } from '../../utils/music/musicContents';
 
 const Login = () => {
   const handleLogin = async () => {
     try {
+      playSE(titleCall);
       await signInWithGoogle();
   
       const user = auth.currentUser;
@@ -31,6 +35,10 @@ const Login = () => {
       console.error('ログイン失敗:', err);
     }
   };
+
+  useEffect(() => {
+    onSound(titleBGM);
+  }, []);
   
 
   return (
@@ -44,9 +52,10 @@ const Login = () => {
       {/* ログインボタン */}
       <div className="absolute bottom-[15%] left-1/2 transform -translate-x-1/2">
         <button
-          onClick={handleLogin}
+          onClick={() => {playSE(clickSound); handleLogin();}}
+          onMouseEnter={() => playSE(selectSound)}
           className="flex items-center gap-3 bg-white text-gray-700 border border-gray-300 px-10 py-3 rounded-full 
-          shadow-md hover:shadow-3lg transition duration-200 hover:bg-gray-100 hover:scale-105 text-base font-semibold"
+          shadow-md hover:shadow-3lg transition duration-200 hover:bg-gray-100 hover:scale-105 text-base font-semibold cursor-pointer"
         >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"

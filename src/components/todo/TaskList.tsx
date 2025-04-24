@@ -15,6 +15,9 @@ import EditTaskModal from "./EditTaskModal";
 import AddTaskModal from "./AddTaskModal";
 import CompleteTaskModal from "./CompleteTaskModal";
 import RetireMovieModal from "../movie/RetireMovieModal";
+import { playSE } from "../../utils/music/soundPlayer";
+import { clickDetail, clickSound, closeButton, sortSound } from "../../utils/music/musicContents";
+import background from "../../assets/backgound/tasklist.jpg"
 
 type Task = {
   id: string;
@@ -149,12 +152,17 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   return (
 <>
   {/* 📄 テーブルを囲む「紙」 */}
-  <div className="fixed top-20 bg-white rounded-xl shadow-lg p-8 w-[50%] max-w-5xl h-[85vh] overflow-hidden ">
-    <div className="flex flex-col sm:flex-row items-center justify-between px-4 pb-4">
+  <div className="fixed top-20 left-5 bg-white rounded-xl shadow-lg p-8 w-[50%] max-w-5xl h-[85vh] overflow-hidden "
+    style={{
+      backgroundImage: `url(${background})`,
+      backgroundSize: 'cover',
+    }}
+  >
+    <div className="flex flex-col justify-between items-center sm:flex-row px-4 pb-4 ">
       <h2 className="text-xl font-bold">あなたのタスク一覧</h2>
       <button
-        onClick={() => setOpenAddingTask(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-3 sm:mt-0"
+        onClick={() => {playSE(clickDetail); setOpenAddingTask(true)}}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-3 sm:mt-0 cursor-pointer hover:scale-105 duration-300"
       >
         タスクを作成
       </button>
@@ -172,13 +180,13 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
               <th className="px-4 py-2 font-semibold w-[40%]">タスク名</th>
               <th
                 className="px-4 py-2 font-semibold cursor-pointer hover:underline w-[20%]"
-                onClick={() => toggleSort("dueDate")}
+                onClick={() => {playSE(sortSound); toggleSort("dueDate");}}
               >
                 期限 {sortKey === "dueDate" && (sortOrder === "asc" ? "⌛️" : "⏳")}
               </th>
               <th
                 className="px-4 py-2 font-semibold cursor-pointer hover:underline w-[15%]"
-                onClick={() => toggleSort("level")}
+                onClick={() => {playSE(sortSound); toggleSort("level");}}
               >
                 難易度 {sortKey === "level" && (sortOrder === "asc" ? "⌛️" : "⏳")}
               </th>
@@ -191,8 +199,8 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
             return (
               <tr
                 key={task.id}
-                onClick={() => setEditingTask(task)}
-                className="cursor-pointer hover:bg-blue-50 transition border-t border-gray-200"
+                onClick={() => {playSE(clickDetail); setEditingTask(task)}}
+                className="cursor-pointer bg-white hover:bg-blue-50 transition border-t border-gray-200 hover:scale-101"
               >
                 <td className="p-3 flex items-center space-x-2">
                   <div
@@ -216,20 +224,22 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
                       {!isExpired && (
                         <button
                           onClick={(e) => {
+                            playSE(clickSound);
                             e.stopPropagation();
                             setCompleteTask(task);
                           }}
-                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 cursor-pointer hover:scale-105 duration-300"
                         >
                           完了
                         </button>
                       )}
                       <button
                         onClick={(e) => {
+                          playSE(clickSound);
                           e.stopPropagation();
                           setSelectedTask(task);
                         }}
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 cursor-pointer hover:scale-105 duration-300"
                       >
                         リタイア
                       </button>
@@ -246,8 +256,8 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   </div>
 
   {/* モーダルたち */}
-  <AddTaskModal isOpen={openAddingTask} onCancel={() => setOpenAddingTask(false)} onAdded={() => setOpenAddingTask(false)} />
-  <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => setEditingTask(null)} onUpdated={() => setEditingTask(null)} />
+  <AddTaskModal isOpen={openAddingTask} onCancel={() => {playSE(clickDetail); setOpenAddingTask(false)}} onAdded={() => setOpenAddingTask(false)} />
+  <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => {playSE(clickDetail); setEditingTask(null)}} onUpdated={() => setEditingTask(null)} />
   <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={handleComplete} />
   <DeleteTaskModal 
     isOpen={!!selectedTask}
@@ -256,6 +266,7 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
     onConfirm={() => { // アニメーション後に表示
       handleDelete()
       setshowMovieModal(true);
+      playSE(closeButton);
     }}
   />
   <RetireMovieModal isOpen={showMovieModal} characterId={characterId!} onClose={() => setshowMovieModal(false)}/>

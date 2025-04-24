@@ -1,3 +1,5 @@
+import { closeButton } from "../../utils/music/musicContents";
+import { playSE } from "../../utils/music/soundPlayer";
 import Modal from "../common/Modal";
 
 type Task = {
@@ -45,14 +47,14 @@ const DeleteTaskModal = ({ isOpen, task, onCancel, onConfirm }: Props) => {
         )}
         <div className="flex justify-center space-x-4">
           <button
-            onClick={onConfirm}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            onClick={() => {playSE(closeButton); onConfirm()}}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 hover:scale-105 duration-300"
           >
             削除
           </button>
           <button
-            onClick={onCancel}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            onClick={() => {playSE(closeButton);onCancel()}}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 hover:scale-105 duration-300"
           >
             戻る
           </button>

@@ -141,14 +141,14 @@ const EditTaskModal = ({ isOpen, task, onCancel, onUpdated }: Props) => {
           <button
             type="button"
             onClick={handleUpdate}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:scale-105 duration-300"
           >
             更新
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 hover:scale-105 duration-300"
           >
             戻る
           </button>

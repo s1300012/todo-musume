@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Modal from "../common/Modal";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../utils/firebase/firebase";
+import { playSE } from "../../utils/music/soundPlayer";
+import { closeButton } from "../../utils/music/musicContents";
 
 const genders = ["未設定", "男性", "女性", "その他"];
 
@@ -94,15 +96,15 @@ const UserSettingsModal = ({ isOpen, onClose, onSaved}: Props) => {
         <div className="flex justify-center space-x-4 mt-4">
           <button
             type="button"
-            onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={() => {playSE(closeButton);handleSave()}}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:scale-105 duration-300"
           >
             保存
           </button>
           <button
             type="button"
-            onClick={onClose}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            onClick={() => {playSE(closeButton);onClose()}}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 hover:scale-105 duration-300"
           >
             キャンセル
           </button>

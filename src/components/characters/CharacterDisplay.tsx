@@ -5,6 +5,8 @@ import { auth, db } from "../../utils/firebase/firebase";
 import CharacterSelectModal from "./CharacterSelectModal";
 import { affectionImages } from "../../utils/constants/affections";
 import CharacterDetailModal from "./CharacterDetailModal";
+import { playSE } from "../../utils/music/soundPlayer";
+import { clickSound, closeButton, selectSound } from "../../utils/music/musicContents";
 
 type Props = {
   onCharacterSelected?: () => void;
@@ -41,6 +43,7 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
   };
 
   const handleModalClose = async () => {
+    playSE(closeButton);
     setIsSelectModalOpen(false);
     await fetchCharacterData(); // モーダルを閉じた後、最新のキャラと好感度を反映
     onCharacterSelected?.();
@@ -53,7 +56,7 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
   const message = character ? character.message : "おにいちゃん、がんばってね！";
 
   return (
-    <div className="fixed right-0 top-0 h-full w-1/2 bg-gradient-to-br to-blue-50 flex flex-col items-center justify-center p-4 shadow-inner z-10">
+    <div className="fixed right-0 top-12 h-full w-1/2 flex flex-col  z-20">
       {/* キャラとメーター */}
       <div className="relative flex justify-center items-end gap-10 w-full pt-[50px]">
         {/* キャラとボタン */}
@@ -64,8 +67,9 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
               src={characterImage!}
               alt={`キャラ${characterId}`}
               className="max-h-[70vh] object-contain drop-shadow-xl cursor-pointer transition-all duration-300
-                      rounded-lg hover: hover:scale-105"
-              onClick={() => setSelectedDetailId(characterId)}
+                      rounded-lg hover:scale-105"
+              onClick={() => {playSE(clickSound); setSelectedDetailId(characterId)}}
+              onMouseEnter={() => playSE(selectSound)}
             />
             <div className="absolute bottom-[300px] bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm text-gray-700 shadow-md ">
               <div className="absolute -top-2 left-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[10px] border-b-white" />
@@ -75,8 +79,8 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
           }
           {/* キャラ選択ボタン */}
           <button
-            onClick={handleSelectCharacter}
-            className="mt-4 border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100"
+            onClick={() => {playSE(clickSound); handleSelectCharacter();}}
+            className="mt-4 border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100 cursor-pointer hover: hover:scale-105"
           >
             キャラ選択
           </button>
@@ -97,7 +101,7 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
       <CharacterDetailModal
         isOpen={selectedDetailId !== null}
         characterId={selectedDetailId!}
-        onClose={() => setSelectedDetailId(null)}
+        onClose={() => {playSE(closeButton); setSelectedDetailId(null)}}
       />
     </div>
   );

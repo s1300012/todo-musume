@@ -4,6 +4,8 @@ import UserSettingsModal from "../User/UserSettingsModal";
 import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase/firebase";
+import { playSE } from "../../utils/music/soundPlayer";
+import { clickSound } from "../../utils/music/musicContents";
 
 type Props = {
   user: User;
@@ -40,7 +42,7 @@ const AppHeader = ({ user }: Props) => {
 
   return (
     <>
-      <div className="fixed top-0 w-full bg-gray-800 text-white px-6 py-1 shadow-md z-20">
+      <div className="fixed top-0 w-full bg-gray-800 text-white px-6 py-1 shadow-md">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-3">
             {user.photoURL && (
@@ -54,14 +56,14 @@ const AppHeader = ({ user }: Props) => {
           </div>
           <div className="flex gap-10">
             <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-1 rounded"
+              onClick={() => {playSE(clickSound);setIsSettingsOpen(true)}}
+              className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-1 rounded cursor-pointer hover:scale-105 duration-300"
             >
               ユーザー設定
             </button>
             <button
-              onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded"
+              onClick={() => {playSE(clickSound); handleLogout();}}
+              className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded cursor-pointer hover:scale-105 duration-300"
             >
               ログアウト
             </button>

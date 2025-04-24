@@ -4,6 +4,8 @@ import { Task } from "../../utils/constants/task";
 import { auth, db } from "../../utils/firebase/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import AffectionUpModal from "../movie/AffectionUpModal";
+import { playSE } from "../../utils/music/soundPlayer";
+import { closeButton, completeSound } from "../../utils/music/musicContents";
 
 type Props = {
   isOpen: boolean;
@@ -65,14 +67,14 @@ const CompleteTaskModal = ({ isOpen, task, onCancel, onCompleted }: Props) => {
 
           <div className="flex justify-center space-x-4">
             <button
-              onClick={handleComplete}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              onClick={() => {playSE(completeSound); handleComplete();}}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:scale-105 duration-300"
             >
               完了
             </button>
             <button
-              onClick={onCancel}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+              onClick={() => {playSE(closeButton); onCancel()}}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 hover:scale-105 duration-300"
             >
               戻る
             </button>

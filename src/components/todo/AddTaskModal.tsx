@@ -133,13 +133,13 @@ export default function AddTaskForm({isOpen, onCancel, onAdded }: Props) {
         <div className="flex justify-center space-x-4 mt-4">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 hover:scale-105 duration-300"
           >
             タスク追加
           </button>
           <button
             onClick={onCancel}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 hover:scale-105 duration-300"
           >
             戻る
           </button>
