@@ -1,4 +1,3 @@
-// src/components/modal/OpenAffectionUpModal.tsx
 import Modal from "../common/Modal";
 import { playSE } from "../../utils/music/soundPlayer";
 import { clickSound } from "../../utils/music/musicContents";

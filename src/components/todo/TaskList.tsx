@@ -20,7 +20,7 @@ import { playSE } from "../../utils/music/soundPlayer";
 import { clickDetail, clickSound, closeButton, sortSound } from "../../utils/music/musicContents";
 import background from "../../assets/backgound/tasklist.jpg"
 import AffectionUpModal from "../movie/AffectionUpModal";
-import OpenAffectionUpModal from "./openAffectionUpModal";
+import OpenAffectionUpModal from "./OpenAffectionUpModal";
 import OpenAffectionDownModal from "./OpenAffectionDownModal";
 
 type Task = {
