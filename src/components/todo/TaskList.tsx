@@ -282,7 +282,7 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
 
   {/* モーダルたち */}
   <AddTaskModal isOpen={openAddingTask} onCancel={() => {playSE(clickDetail); setOpenAddingTask(false)}} onAdded={() => {playSE(completeSound); setOpenAddingTask(false)}} />
-  <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => {playSE(clickDetail); setEditingTask(null)}} onUpdated={() => setEditingTask(null)} />
+  <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => {playSE(clickDetail); setEditingTask(null)}} onUpdated={() => {playSE(completeSound); setEditingTask(null)}} />
   <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={() => {handleComplete(); setIsAffectionUpModalOpen(true);}} setNewAffectionLevel={setNewAffectionLevel}/>
   <DeleteTaskModal 
     isOpen={!!selectedTask}

@@ -20,7 +20,7 @@ const OpenAffectionUpModal = ({
   if(characterId === 2) characterName = "白鷺ソフィア";
   if(characterId === 3) characterName = "東雲懐季";
   return (
-    <Modal isOpen={isOpen} onClose={() => {}}>
+    <Modal isOpen={isOpen} >
       <div className="flex flex-col items-center justify-center p-6 space-y-6">
         <h2 className="text-2xl font-bold text-center">
           {characterName}からの好感度レベルが{affectionLevel}になりました！
