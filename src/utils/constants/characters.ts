@@ -1,16 +1,16 @@
 // src/utils/constants/characters.ts
-import character1 from "../../assets/characters/stand-image/character1.jpg";
-import character2 from "../../assets/characters/stand-image/character2.jpg";
-import character3 from "../../assets/characters/stand-image/character3.jpg";
+import character1 from "../../assets/characters/stand-image/character1.png";
+import character2 from "../../assets/characters/stand-image/character2.png";
+import character3 from "../../assets/characters/stand-image/character3.png";
 import character1Card from "../../assets/characters/card-image/character_1.jpg";
 import character2Card from "../../assets/characters/card-image/character_2.jpg";
 import character3Card from "../../assets/characters/card-image/character_3.jpg";
 import character1Top from "../../assets/characters/top-body-image/charecter1.jpg";
 import character2Top from "../../assets/characters/top-body-image/character2.jpg";
 import character3Top from "../../assets/characters/top-body-image/character3.jpg";
-import pink from "../../assets/characters/select-icon/pink.jpg";
-import blue from "../../assets/characters/select-icon/blue.jpg";
-import yellow from "../../assets/characters/select-icon/yellow.jpg";
+import pink from "../../assets/characters/select-icon/pink.png";
+import blue from "../../assets/characters/select-icon/blue.png";
+import yellow from "../../assets/characters/select-icon/yellow.png";
 
 export type CharacterStand = {
   id: number;

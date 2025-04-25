@@ -1,9 +1,9 @@
-import affection1 from "../../assets/affections/affection_0.jpg";
-import affection2 from "../../assets/affections/affection_1.jpg";
-import affection3 from "../../assets/affections/affection_2.jpg";
-import affection4 from "../../assets/affections/affection_3.jpg";
-import affection5 from "../../assets/affections/affection_4.jpg";
-import affection6 from "../../assets/affections/affection_5.jpg";
+import affection1 from "../../assets/affections/affection_0.png";
+import affection2 from "../../assets/affections/affection_1.png";
+import affection3 from "../../assets/affections/affection_2.png";
+import affection4 from "../../assets/affections/affection_3.png";
+import affection5 from "../../assets/affections/affection_4.png";
+import affection6 from "../../assets/affections/affection_5.png";
 
 export type Affection = {
     id: number;
