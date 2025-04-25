@@ -44,9 +44,8 @@ export default function AddTaskForm({isOpen, onCancel, onAdded }: Props) {
       level,
       content,
       userId: auth.currentUser?.uid,
-      createdAt: serverTimestamp(), // ← これを必ず入れる！
+      createdAt: new Date()
     });
-
       setTitle("");
       setDueDate("");
       setDueTime("");

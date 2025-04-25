@@ -8,6 +8,7 @@ import {
   doc,
   updateDoc,
   getDoc,
+  orderBy,
 } from "firebase/firestore";
 import { auth, db } from "../../utils/firebase/firebase";
 import DeleteTaskModal from "./DeleteTaskModal";
@@ -18,6 +19,8 @@ import RetireMovieModal from "../movie/RetireMovieModal";
 import { playSE } from "../../utils/music/soundPlayer";
 import { clickDetail, clickSound, closeButton, sortSound } from "../../utils/music/musicContents";
 import background from "../../assets/backgound/tasklist.jpg"
+import AffectionUpModal from "../movie/AffectionUpModal";
+import OpenAffectionUpModal from "./openAffectionUpModal";
 
 type Task = {
   id: string;
@@ -40,10 +43,13 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [completeTask, setCompleteTask] = useState<Task | null>(null);
-  const [sortKey, setSortKey] = useState<"dueDate" | "level" | null>(null);
+  const [sortKey, setSortKey] = useState<"dueDate" | "level" | "title" | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [showMovieModal, setshowMovieModal] = useState(false);
   const [characterId, setCharacterId] = useState(null);
+  const [isAffectionModalOpen, setIsAffectionModalOpen] = useState(false);
+  const [showAffectionMovieModal, setShowAffectionMovieModal] = useState(false);
+  const [newAffectionLevel, setNewAffectionLevel] = useState(1);
 
   useEffect(() => {
     if (!auth.currentUser) return;
@@ -62,7 +68,8 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   
     const q = query(
       collection(db, "todos"),
-      where("userId", "==", auth.currentUser.uid)
+      where("userId", "==", auth.currentUser.uid),
+      orderBy("createdAt", "asc")
     );
   
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -76,33 +83,45 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   
     return () => unsubscribe();
   }, [characterUpdatedAt]);
-  
 
   const sortedTasks = [...tasks].sort((a, b) => {
     if (!sortKey) return 0;
+  
     if (sortKey === "dueDate") {
       const aHasDate = !!a.dueDate;
       const bHasDate = !!b.dueDate;
-
-      if (!aHasDate && bHasDate) return 1;   // aが欠損 → 後ろに
-      if (aHasDate && !bHasDate) return -1;  // bが欠損 → bを後ろに
-      if (!aHasDate && !bHasDate) return 0;  // 両方欠損 → 同順位
+  
+      if (!aHasDate && bHasDate) return 1;
+      if (aHasDate && !bHasDate) return -1;
+      if (!aHasDate && !bHasDate) return 0;
+  
       const aDate = new Date(`${a.dueDate}T${a.dueTime || "00:00"}`);
       const bDate = new Date(`${b.dueDate}T${b.dueTime || "00:00"}`);
       return sortOrder === "asc"
         ? aDate.getTime() - bDate.getTime()
         : bDate.getTime() - aDate.getTime();
     }
-    const aValue = a[sortKey];
-    const bValue = b[sortKey];
-    if (typeof aValue === "number" && typeof bValue === "number") {
+  
+    if (sortKey === "level") {
+      const aValue = a.level;
+      const bValue = b.level;
       return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
     }
+  
+    if (sortKey === "title") {
+      const aTitle = a.title.toLowerCase();
+      const bTitle = b.title.toLowerCase();
+      if (aTitle < bTitle) return sortOrder === "asc" ? -1 : 1;
+      if (aTitle > bTitle) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    }
+  
     return 0;
   });
   
+  
 
-  const toggleSort = (key: "dueDate" | "level") => {
+  const toggleSort = (key: "dueDate" | "level" | "title") => {
     if (sortKey === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -177,7 +196,10 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
         <table className="min-w-full text-sm border border-gray-300 rounded overflow-hidden">
           <thead className="bg-gray-100 text-left sticky top-0 ">
             <tr>
-              <th className="px-4 py-2 font-semibold w-[40%]">タスク名</th>
+              <th className="px-4 py-2 font-semibold w-[40%] cursor-pointer hover:underline w-[20%]"
+                onClick={() => {playSE(sortSound); toggleSort("title");}}
+                >タスク名 {sortKey === "title" && (sortOrder === "asc" ? "⌛️" : "⏳")}
+              </th>
               <th
                 className="px-4 py-2 font-semibold cursor-pointer hover:underline w-[20%]"
                 onClick={() => {playSE(sortSound); toggleSort("dueDate");}}
@@ -256,9 +278,9 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   </div>
 
   {/* モーダルたち */}
-  <AddTaskModal isOpen={openAddingTask} onCancel={() => {playSE(clickDetail); setOpenAddingTask(false)}} onAdded={() => setOpenAddingTask(false)} />
+  <AddTaskModal isOpen={openAddingTask} onCancel={() => {playSE(clickDetail); setOpenAddingTask(false)}} onAdded={() => {setOpenAddingTask(false)}} />
   <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => {playSE(clickDetail); setEditingTask(null)}} onUpdated={() => setEditingTask(null)} />
-  <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={handleComplete} />
+  <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={() => {handleComplete(); setIsAffectionModalOpen(true);}} setNewAffectionLevel={setNewAffectionLevel}/>
   <DeleteTaskModal 
     isOpen={!!selectedTask}
     task={selectedTask}
@@ -270,6 +292,24 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
     }}
   />
   <RetireMovieModal isOpen={showMovieModal} characterId={characterId!} onClose={() => setshowMovieModal(false)}/>
+  {/* 好感度アップモーダル */}
+  {characterId !== null && (
+    <AffectionUpModal
+      isOpen={showAffectionMovieModal}
+      onClose={() => setShowAffectionMovieModal(false)}
+      level={newAffectionLevel}
+      characterId={characterId}
+    />
+  )}
+  <OpenAffectionUpModal
+    isOpen={isAffectionModalOpen}
+    onConfirm={() => {
+    setIsAffectionModalOpen(false);
+    setShowAffectionMovieModal(true);
+  }}
+  characterId={characterId!}
+  affectionLevel={newAffectionLevel - 1}
+  />
 </>
   );
 }

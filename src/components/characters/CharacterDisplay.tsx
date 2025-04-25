@@ -111,7 +111,7 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
           alt={`好感度: ${affectionLevel}`}
           className="w-30 h-full object-contain"
         />}
-                </div>
+      </div>
       </div>
       {/* キャラ選択モーダル */}
       <CharacterSelectModal
@@ -132,6 +132,7 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
           setShowUserRegisterModal(false);
           setIsFirstLogin(true);
           setIsSelectModalOpen(true); // ユーザー登録後にキャラ選択を開く
+          onCharacterSelected?.();
         }}
       />
     </div>

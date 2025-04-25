@@ -39,10 +39,9 @@ const CharacterDetailModal = ({ isOpen, characterId, onClose }: Props) => {
             <p className="text-gray-700 mb-1">{character.description.like}</p>
             <p className="text-gray-700 mb-1">{character.description.unlike}</p>
             <p className="text-gray-700 mb-1">{character.description.three_size}</p>
-            <p className="text-gray-700 mb-1">{character.description.feature}</p>
-            <p className="text-gray-700 mt-1">
-              {character.description.coment}
-            </p>
+            <p className="text-gray-700 mt-1 whitespace-pre-line">
+  {character.description.coment}
+</p>
           </div>
 
         </div>
