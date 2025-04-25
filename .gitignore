@@ -20,3 +20,7 @@ lerna-debug.log*
 *.sln
 *.sw?
 *.env
+dist/
+public/
+.github/
+.firebase/
