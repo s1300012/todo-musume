@@ -5,7 +5,7 @@ import background from "../../assets/backgound/modal2.jpg";
 
 type ModalProps = {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void
   children: ReactNode;
 };
 
@@ -13,7 +13,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   // ESCキーで閉じる
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (onClose && e.key === "Escape") onClose();
     };
     if (isOpen) window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -49,14 +49,16 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
             transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()} // モーダル内クリックでは閉じない
           >
+          {onClose && (
             <button
               onClick={onClose}
-              className={`absolute -top-3 -right-3 bg-gray-300 border border-black rounded-full w-13 h-13 
+              className="absolute -top-3 -right-3 bg-gray-300 border border-black rounded-full w-13 h-13 
                 flex items-center justify-center text-sm cursor-pointer transition-all duration-300 
-                hover:border-blue-500 hover:shadow-lg hover:scale-105`}
+                hover:border-blue-500 hover:shadow-lg hover:scale-105"
             >
               ✕
             </button>
+          )}
             {children}
           </motion.div>
         </motion.div>

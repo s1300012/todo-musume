@@ -7,6 +7,7 @@ import { affectionImages } from "../../utils/constants/affections";
 import CharacterDetailModal from "./CharacterDetailModal";
 import { playSE } from "../../utils/music/soundPlayer";
 import { clickSound, closeButton, selectSound } from "../../utils/music/musicContents";
+import UserRegisterModal from "../User/UserRegisterModal";
 
 type Props = {
   onCharacterSelected?: () => void;
@@ -18,6 +19,8 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
   const [affectionLevel, setAffectionLevel] = useState<number>();
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
   const [selectedDetailId, setSelectedDetailId] = useState<number | null>(null);
+  const [showUserRegisterModal, setShowUserRegisterModal] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(true);
 
   const fetchCharacterData = async () => {
     if (!auth.currentUser) return;
@@ -35,7 +38,20 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
   }));
 
   useEffect(() => {
-    fetchCharacterData();
+    const checkFirstLogin = async () => {
+      if (!auth.currentUser) return;
+      const ref = doc(db, "users", auth.currentUser.uid);
+      const snap = await getDoc(ref);
+      const data = snap.data();
+      if (!data?.loggedInFlg) {
+        setIsFirstLogin(true);
+        setShowUserRegisterModal(true);
+      } else {
+        setIsFirstLogin(false);
+        fetchCharacterData();
+      }
+    };
+    checkFirstLogin();
   }, []);
 
   const handleSelectCharacter = () => {
@@ -43,6 +59,7 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
   };
 
   const handleModalClose = async () => {
+    setIsFirstLogin(false);
     playSE(closeButton);
     setIsSelectModalOpen(false);
     await fetchCharacterData(); // モーダルを閉じた後、最新のキャラと好感度を反映
@@ -96,15 +113,26 @@ const CharacterDisplay = forwardRef<{ refreshCharacterData: () => void }, Props>
         />}
                 </div>
       </div>
+      {/* キャラ選択モーダル */}
       <CharacterSelectModal
         isOpen={isSelectModalOpen}
         onClose={handleModalClose}
+        isFirstLogin={isFirstLogin}
       />
       {/* キャラ詳細モーダル */}
       <CharacterDetailModal
         isOpen={selectedDetailId !== null}
         characterId={selectedDetailId!}
         onClose={() => {playSE(closeButton); setSelectedDetailId(null)}}
+      />
+      {/* 初回ユーザー設定モーダル */}
+      <UserRegisterModal
+        isOpen={showUserRegisterModal}
+        onComplete={() => {
+          setShowUserRegisterModal(false);
+          setIsFirstLogin(true);
+          setIsSelectModalOpen(true); // ユーザー登録後にキャラ選択を開く
+        }}
       />
     </div>
   );

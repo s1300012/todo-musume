@@ -26,6 +26,7 @@ const Login = () => {
           gender: '未設定',
           affectionLevel: null,
           characterId: null,
+          loggedInFlg: false,
           createdAt: new Date()
         });
         console.log("ユーザー初期データ作成");

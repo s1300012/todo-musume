@@ -13,9 +13,10 @@ import { greets } from "../../utils/music/charaSE";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  isFirstLogin?: boolean; // 追加
 };
 
-const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
+const CharacterSelectModal = ({ isOpen, onClose, isFirstLogin}: Props) => {
   const [selectedDetailId, setSelectedDetailId] = useState<number | null>(null);
   const [confirmingCharId, setConfirmingCharId] = useState<number | null>(null);
   const [showMovieModal, setshowMovieModal] = useState(false);
@@ -40,7 +41,7 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
 
   return (
     <>
-      <BigModal isOpen={isOpen} onClose={onClose}>
+      <BigModal isOpen={isOpen} onClose={isFirstLogin ? () => {} : onClose}>
         <div className="rounded shadow-lg w-full h-full">
           <h1 className="text-5xl font-bold text-center mt-5 mb-10">３人の中からキャラクターを選んでね</h1>
           <div className="flex justify-around items-end gap-4">
@@ -74,12 +75,16 @@ const CharacterSelectModal = ({ isOpen, onClose }: Props) => {
             })}
           </div>
           <div className="flex justify-center mt-6">
-            <button
-              onClick={onClose}
-              className="border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100 hover:scale-105 duration-300"
-            >
-              戻る
-            </button>
+          {!isFirstLogin && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={onClose}
+                className="border border-black bg-white text-black px-4 py-2 rounded hover:bg-gray-100 hover:scale-105 duration-300"
+              >
+                戻る
+              </button>
+            </div>
+          )}
           </div>
         </div>
       </BigModal>
