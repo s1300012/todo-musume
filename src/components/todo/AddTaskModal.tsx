@@ -4,6 +4,8 @@ import { auth, db } from "../../utils/firebase/firebase";
 import Modal from "../common/Modal";
 import ColorSelect from "../common/ColorSelect";
 import SelectBox from "../common/SelectBox";
+import { playSE } from "../../utils/music/soundPlayer";
+import { completeSound } from "../../utils/music/musicContents";
 
 type Props = {
   isOpen: boolean;
@@ -57,6 +59,7 @@ export default function AddTaskForm({isOpen, onCancel, onAdded }: Props) {
       console.error("追加エラー:", error);
       alert("タスクの追加に失敗しました");
     }
+    playSE(completeSound);
   };
 
   return (

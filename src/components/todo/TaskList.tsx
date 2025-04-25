@@ -17,7 +17,7 @@ import AddTaskModal from "./AddTaskModal";
 import CompleteTaskModal from "./CompleteTaskModal";
 import RetireMovieModal from "../movie/RetireMovieModal";
 import { playSE } from "../../utils/music/soundPlayer";
-import { clickDetail, clickSound, closeButton, sortSound } from "../../utils/music/musicContents";
+import { clickDetail, clickSound, closeButton, completeSound, sortSound } from "../../utils/music/musicContents";
 import background from "../../assets/backgound/tasklist.jpg"
 import AffectionUpModal from "../movie/AffectionUpModal";
 import OpenAffectionUpModal from "./OpenAffectionUpModal";
@@ -281,7 +281,7 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   </div>
 
   {/* モーダルたち */}
-  <AddTaskModal isOpen={openAddingTask} onCancel={() => {playSE(clickDetail); setOpenAddingTask(false)}} onAdded={() => {setOpenAddingTask(false)}} />
+  <AddTaskModal isOpen={openAddingTask} onCancel={() => {playSE(clickDetail); setOpenAddingTask(false)}} onAdded={() => {playSE(completeSound); setOpenAddingTask(false)}} />
   <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => {playSE(clickDetail); setEditingTask(null)}} onUpdated={() => setEditingTask(null)} />
   <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={() => {handleComplete(); setIsAffectionUpModalOpen(true);}} setNewAffectionLevel={setNewAffectionLevel}/>
   <DeleteTaskModal 
