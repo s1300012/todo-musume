@@ -1,9 +1,9 @@
-import chara1_1 from "../../assets/charamovies/retire/chara1_1.png"
-import chara1_2 from "../../assets/charamovies/retire/chara1_2.png"
-import chara2_1 from "../../assets/charamovies/retire/chara2_1.png"
-import chara2_2 from "../../assets/charamovies/retire/chara2_2.png"
-import chara3_1 from "../../assets/charamovies/retire/chara3_1.png"
-import chara3_2 from "../../assets/charamovies/retire/chara3_2.png"
+import chara1_1 from "../../assets/charamovies/retire/chara1_1.jpg"
+import chara1_2 from "../../assets/charamovies/retire/chara1_2.jpg"
+import chara2_1 from "../../assets/charamovies/retire/chara2_1.jpg"
+import chara2_2 from "../../assets/charamovies/retire/chara2_2.jpg"
+import chara3_1 from "../../assets/charamovies/retire/chara3_1.jpg"
+import chara3_2 from "../../assets/charamovies/retire/chara3_2.jpg"
 
 export type MovieChara = {
     id: number;

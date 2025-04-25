@@ -1,6 +1,6 @@
-import chara1 from "../../assets/charamovies/characterSelect/chara1.png"
-import chara2 from "../../assets/charamovies/characterSelect/chara2.png"
-import chara3 from "../../assets/charamovies/characterSelect/chara3.png"
+import chara1 from "../../assets/charamovies/characterSelect/chara1.jpg"
+import chara2 from "../../assets/charamovies/characterSelect/chara2.jpg"
+import chara3 from "../../assets/charamovies/characterSelect/chara3.jpg"
 
 export type MovieSelectChara = {
     id: number;
