@@ -46,7 +46,6 @@ export type CharacterDescription = {
   like: string;
   unlike: string;
   three_size: string;
-  feature: string;
   coment: string;
 };
 
@@ -66,8 +65,9 @@ export const charactersCard: CharacterCard[] = [
     like: "好きなもの: 自分、マシュマロ",
     unlike: "嫌いなもの: 虫、高層ビル",
     three_size:"スリーサイズ: B74 / W54 / H77",
-    feature: "低身長 × 貧乳設定 ＋ インフルエンサー志望の可愛らしいスタイル",
-    coment: `一言メモ: 大学の後輩。小さくて可愛いと言われるが、本人は気にしている。
+    coment: `
+    大学の後輩。
+    小さくて可愛いと言われるが、本人は気にしている。
     インフルエンサーを目指し、SNSに力を入れているが、あまり成果は出ていない。`
     }
   },
@@ -86,9 +86,10 @@ export const charactersCard: CharacterCard[] = [
       like: "好きなもの: 辛い食べ物、イヤリング",
       unlike: "嫌いなもの: ブラックコーヒー、暑いところ",
       three_size:"スリーサイズ: B83 / W58 / H83",
-      feature: "落ち着いた大人の女性らしいバランス型 ＋ 上品なスタイル感を意識",
-      coment: `一言メモ: ロシアと日本のハーフ。だが、生まれがロシアなだけで、ほとんどロシア語は話せない。
-      容姿から恋愛経験が豊富と思われがちだが、本人は恋愛経験はゼロ`
+      coment: `
+        ロシアと日本のハーフ。
+        だが、生まれがロシアなだけで、ほとんどロシア語は話せない。
+        容姿から恋愛経験が豊富と思われがちだが、本人は恋愛経験はゼロ。`
       }
   },
   { id: 3, name: "東雲 懐季", image: character3Card,
@@ -106,9 +107,11 @@ export const charactersCard: CharacterCard[] = [
       like: "好きなもの: 自分、マシュマロ",
       unlike: "嫌いなもの: 高いところ、春菊",
       three_size:"スリーサイズ: B82 / W55 / H77",
-      feature: "低身長×貧乳設定＋インフルエンサー志望の可愛らしいスタイル",
-      coment: `一言メモ: 幼稚園からの幼馴染。しっかりしてると思われがちだが、案外ズボラ。
-        最近、食べ過ぎにより、体重が増加。ダイエットを考えている。`
+      coment: `
+      幼稚園からの幼馴染。
+      しっかりしてると思われがちだが、案外ズボラ。
+      最近、食べ過ぎにより、体重が増加。
+      ダイエットを考えている。`
     }},
 ];
 

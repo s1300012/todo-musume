@@ -40,7 +40,7 @@ const Top = ({ currentUser }: Props) => {
             setCharacterUpdatedAt(Date.now()); // 💡変更があったことを通知
           }}
         />
-        <AppHeader user={currentUser} />
+        <AppHeader user={currentUser} ref={characterUpdatedAt}/>
     </div>
   );
 };

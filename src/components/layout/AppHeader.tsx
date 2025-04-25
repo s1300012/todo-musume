@@ -9,16 +9,14 @@ import LogoutModal from "../User/LogoutModal";
 
 type Props = {
   user: User;
+  ref: number;
 };
 
-const AppHeader = ({ user }: Props) => {
+const AppHeader = ({ user, ref}: Props) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [userName, setUserName] = useState<string>("");
   const [showLogout, setShowLogout] = useState(false);
 
-
-
-  // useEffect の外に出して再利用可能にする
   const fetchUserName = async () => {
     if (!user.uid) return;
     const ref = doc(db, "users", user.uid);
@@ -33,7 +31,7 @@ const AppHeader = ({ user }: Props) => {
 
   useEffect(() => {
     fetchUserName();
-  }, [user]);
+  }, [user, ref]);
 
   return (
     <>

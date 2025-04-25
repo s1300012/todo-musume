@@ -35,7 +35,8 @@ import chara1_40_M from "../../assets/music/chara1/chara1_yarujan.mp3"
 import chara1_60_1_M from "../../assets/music/chara1/chara1_koueini.mp3"
 import chara1_60_2_M from "../../assets/music/chara1/chara1_mezase.mp3"
 import chara1_80_1_M from "../../assets/music/chara1/chara1_mou.mp3"
-import chara1_80_2_M from "../../assets/music/chara1/chara1_happy.mp3"
+import chara1_80_2_M from "../../assets/music/chara1/chara1_geboku.mp3"
+import chara1_80_3_M from "../../assets/music/chara1/chara1_happy.mp3"
 import chara1_100_1_M from "../../assets/music/chara1/chara1_nee.mp3"
 import chara1_100_2_M from "../../assets/music/chara1/chara1_huhu.mp3"
 
@@ -96,17 +97,21 @@ export type MovieChara = {
         words: [
             "あーもう💢💕",
             "一度しか言わないからね！！",
+        ]
+    },
+    { id: 6, scene: "4-2", characterId: 1, affectionlevel: 5, image: chara1_80_1, voice: chara1_80_2_M,
+        words: [
             "「username」！！私の永遠の下僕になりなさい！！",
             "...........",
             "どうなの！驚いていないで、なんか返事しなさいよ"
         ]
     },
-    { id: 6, scene: "4-2", characterId: 1, affectionlevel: 5, image: chara1_80_2, voice: chara1_80_2_M,
+    { id: 7, scene: "4-3", characterId: 1, affectionlevel: 5, image: chara1_80_2, voice: chara1_80_3_M,
         words: [
             "一生私しか見れないようにしてあげるからね。",
         ]
     },
-    { id: 7, scene: "5-1", characterId: 1, affectionlevel: 6, image: chara1_100_1, voice: chara1_100_1_M,
+    { id: 8, scene: "5-1", characterId: 1, affectionlevel: 6, image: chara1_100_1, voice: chara1_100_1_M,
         words: [
             "ねぇ…ほんとにいいの？",
             "……あんた、責任取るんでしょ？",
@@ -114,9 +119,10 @@ export type MovieChara = {
             "…私、初めてなんだから…",
         ]
     },
-    { id: 8, scene: "5-2", characterId: 1, affectionlevel: 6, image: chara1_100_2, voice: chara1_100_2_M,
+    { id: 9, scene: "5-2", characterId: 1, affectionlevel: 6, image: chara1_100_2, voice: chara1_100_2_M,
         words: [
-            "「username」 ふふ..離さないから💕。"
+            "「username」",
+            "ふふ..離さないから💕。"
         ]
     },
   ];
@@ -194,7 +200,7 @@ export type MovieChara = {
     },
     { id: 13, scene: "5-4", characterId: 2, affectionlevel: 6, image: chara2_100_4, voice: "",
         words: [
-            "username。",
+            "「username」。",
         ]
     },
     { id: 14, scene: "5-5", characterId: 2, affectionlevel: 6, image: chara2_100_5, voice: chara2_100_M,
@@ -260,12 +266,12 @@ export type MovieChara = {
     },
     { id: 10, scene: "5-3", characterId: 3, affectionlevel: 6, image: chara3_100_3, voice: "",
         words: [
-            ""
+            "「username」。"
         ]
     },
     { id: 11, scene: "5-4", characterId: 3, affectionlevel: 6, image: chara3_100_4, voice: chara3_100_M,
         words: [
-            "「username」、好きだよ。"
+            "好きだよ。"
         ]
     },
   ];
