@@ -1,7 +1,7 @@
 import { auth, db } from '../../utils/firebase/firebase'; // ← db を含める
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { signInWithGoogle } from '../../utils/firebase/firebaseAuth'
-import affection1 from '../../assets/backgound/title.png'
+import affection1 from '../../assets/backgound/title.jpg'
 import { useEffect } from 'react';
 import { onSound, playSE } from '../../utils/music/soundPlayer';
 import { clickSound, selectSound, titleBGM, titleCall } from '../../utils/music/musicContents';

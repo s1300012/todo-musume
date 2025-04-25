@@ -17,7 +17,7 @@ import CompleteTaskModal from "./CompleteTaskModal";
 import RetireMovieModal from "../movie/RetireMovieModal";
 import { playSE } from "../../utils/music/soundPlayer";
 import { clickDetail, clickSound, closeButton, sortSound } from "../../utils/music/musicContents";
-import background from "../../assets/backgound/tasklist.png"
+import background from "../../assets/backgound/tasklist.jpg"
 
 type Task = {
   id: string;

@@ -5,7 +5,7 @@ import { onSound } from "../utils/music/soundPlayer";
 import {appBGM} from "../utils/music/musicContents"
 import AppHeader from "./layout/AppHeader";
 import { User } from "firebase/auth";
-import background from "../assets/backgound/background.png"
+import background from "../assets/backgound/background.jpg"
 
 type Props = {
   currentUser: User;

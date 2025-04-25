@@ -1,7 +1,7 @@
 // src/components/common/Modal.tsx
 import { ReactNode, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import background from "../../assets/backgound/modal2.png";
+import background from "../../assets/backgound/modal2.jpg";
 
 type ModalProps = {
   isOpen: boolean;
