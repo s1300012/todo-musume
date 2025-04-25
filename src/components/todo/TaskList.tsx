@@ -21,6 +21,7 @@ import { clickDetail, clickSound, closeButton, sortSound } from "../../utils/mus
 import background from "../../assets/backgound/tasklist.jpg"
 import AffectionUpModal from "../movie/AffectionUpModal";
 import OpenAffectionUpModal from "./openAffectionUpModal";
+import OpenAffectionDownModal from "./OpenAffectionDownModal";
 
 type Task = {
   id: string;
@@ -45,11 +46,12 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   const [completeTask, setCompleteTask] = useState<Task | null>(null);
   const [sortKey, setSortKey] = useState<"dueDate" | "level" | "title" | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [showMovieModal, setshowMovieModal] = useState(false);
+  const [showAffectionDownMovieModal, setshowAffectionDownMovieModal] = useState(false);
   const [characterId, setCharacterId] = useState(null);
-  const [isAffectionModalOpen, setIsAffectionModalOpen] = useState(false);
-  const [showAffectionMovieModal, setShowAffectionMovieModal] = useState(false);
+  const [isAffectionUpModalOpen, setIsAffectionUpModalOpen] = useState(false);
+  const [showAffectionUpMovieModal, setShowAffectionUpMovieModal] = useState(false);
   const [newAffectionLevel, setNewAffectionLevel] = useState(1);
+  const [isAffectionDownModalOpen, setIsAffectionDownModalOpen] = useState(false);
 
   useEffect(() => {
     if (!auth.currentUser) return;
@@ -156,6 +158,7 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
         const data = userSnap.data();
         const currentLevel = data.affectionLevel || 1;
         const newLevel = Math.max(1, currentLevel - 1);
+        setNewAffectionLevel(newLevel);
         await updateDoc(userRef, { affectionLevel: newLevel });
       }
   
@@ -280,32 +283,41 @@ export default function TaskList({ characterDisplayRef, characterUpdatedAt }: Pr
   {/* モーダルたち */}
   <AddTaskModal isOpen={openAddingTask} onCancel={() => {playSE(clickDetail); setOpenAddingTask(false)}} onAdded={() => {setOpenAddingTask(false)}} />
   <EditTaskModal isOpen={!!editingTask} task={editingTask} onCancel={() => {playSE(clickDetail); setEditingTask(null)}} onUpdated={() => setEditingTask(null)} />
-  <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={() => {handleComplete(); setIsAffectionModalOpen(true);}} setNewAffectionLevel={setNewAffectionLevel}/>
+  <CompleteTaskModal isOpen={!!completeTask} task={completeTask} onCancel={() => setCompleteTask(null)} onCompleted={() => {handleComplete(); setIsAffectionUpModalOpen(true);}} setNewAffectionLevel={setNewAffectionLevel}/>
   <DeleteTaskModal 
     isOpen={!!selectedTask}
     task={selectedTask}
     onCancel={() => setSelectedTask(null)}
     onConfirm={() => { // アニメーション後に表示
       handleDelete()
-      setshowMovieModal(true);
+      setIsAffectionDownModalOpen(true);
       playSE(closeButton);
     }}
   />
-  <RetireMovieModal isOpen={showMovieModal} characterId={characterId!} onClose={() => setshowMovieModal(false)}/>
+  <RetireMovieModal isOpen={showAffectionDownMovieModal} characterId={characterId!} onClose={() => setshowAffectionDownMovieModal(false)}/>
   {/* 好感度アップモーダル */}
   {characterId !== null && (
     <AffectionUpModal
-      isOpen={showAffectionMovieModal}
-      onClose={() => setShowAffectionMovieModal(false)}
+      isOpen={showAffectionUpMovieModal}
+      onClose={() => setShowAffectionUpMovieModal(false)}
       level={newAffectionLevel}
       characterId={characterId}
     />
   )}
   <OpenAffectionUpModal
-    isOpen={isAffectionModalOpen}
+    isOpen={isAffectionUpModalOpen}
     onConfirm={() => {
-    setIsAffectionModalOpen(false);
-    setShowAffectionMovieModal(true);
+    setIsAffectionUpModalOpen(false);
+    setShowAffectionUpMovieModal(true);
+  }}
+  characterId={characterId!}
+  affectionLevel={newAffectionLevel - 1}
+  />
+    <OpenAffectionDownModal
+    isOpen={isAffectionDownModalOpen}
+    onConfirm={() => {
+    setIsAffectionDownModalOpen(false);
+    setshowAffectionDownMovieModal(true);
   }}
   characterId={characterId!}
   affectionLevel={newAffectionLevel - 1}

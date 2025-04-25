@@ -44,7 +44,7 @@ export default function AddTaskForm({isOpen, onCancel, onAdded }: Props) {
       level,
       content,
       userId: auth.currentUser?.uid,
-      createdAt: new Date()
+      createdAt: serverTimestamp()
     });
       setTitle("");
       setDueDate("");

@@ -83,6 +83,7 @@ export type MovieChara = {
     },
     { id: 3, scene: "3-1", characterId: 1, affectionlevel: 4, image: chara1_60_1, voice: chara1_60_1_M,
         words: [
+            "初デートがカラオケとか、おにーさんセンスなーい（笑）",
             "私の美声を聞けることを光栄に思うことね。",
             "おにーさん💕"
         ]
@@ -95,6 +96,8 @@ export type MovieChara = {
     },
     { id: 5, scene: "4-1", characterId: 1, affectionlevel: 5, image: chara1_80_1, voice: chara1_80_1_M,
         words: [
+            "あんたに言いたい事があるの。",
+            "す、す..........っ",
             "あーもう💢💕",
             "一度しか言わないからね！！",
         ]
@@ -144,6 +147,7 @@ export type MovieChara = {
     { id: 3, scene: "3-1", characterId: 2, affectionlevel: 4, image: chara2_60_1, voice: "",
         words: [
             "私、アイスココアでお願いします。",
+            "誘ってくれてありがと。でも、私なんかとデートしてたのしい？",
             "今日は服装違う？　ふふ…　デートだからね。",
         ]
     },
@@ -170,6 +174,7 @@ export type MovieChara = {
     },
     { id: 8, scene: "4-1", characterId: 2, affectionlevel: 5, image: chara2_80_1, voice: chara2_80_1_M,
         words: [
+            "急に呼び出してごめんなさい。",
             "君と過ごしていく中で気づいたことがあるの。",
             "好きとか、言葉にするの苦手だけど。「username」には、言いたい",
             "うまく言えないけど…",
@@ -223,7 +228,8 @@ export type MovieChara = {
     },
     { id: 3, scene: "3-1", characterId: 3, affectionlevel: 4, image: chara3_60_1, voice: "",
         words: [
-            "どこでもいいと言ったけど、観覧車って💦",
+            "どこでもいいと言ったけど、初デートが遊園地...",
+            "しかも観覧車に乗りたいって...💦",
             "私高いとこ苦手って知ってるよね…",
         ]
     },
@@ -241,7 +247,8 @@ export type MovieChara = {
     },
     { id: 6, scene: "4-2", characterId: 3, affectionlevel: 5, image: chara3_80_2, voice: "",
         words: [
-            "いつも一緒にいてくれてありがとね！！",
+            "急に呼びだしてごめん！！",
+            "と、と、突然だけど、いつも一緒にいてくれてありがとね！！",
             "でも、幼馴染のままなんて嫌だ！！",
             "私の彼氏になってください！！",
             "はぁ　言っちゃった…",
