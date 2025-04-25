@@ -1,14 +1,14 @@
-import title_Bgm from "../../assets/music/common/感じるハピネス.mp3"
-import app_bgm from "../../assets/music/common/あの子に会える予感的なBGM.mp3"
+import title_Bgm from "../../assets/music/common/title_bgm.mp3"
+import app_bgm from "../../assets/music/common/app_bgm.mp3"
 
-import title_Call from "../../assets/music/common/音声-250423_211123-2.mp3"
-import select_effect from "../../assets/music/effect-sound/決定ボタンを押す45.mp3"
-import click_effect from "../../assets/music/effect-sound/決定ボタンを押す49.mp3"
-import click_detail from "../../assets/music/effect-sound/ページめくり2.mp3"
-import sort_sound from "../../assets/music/effect-sound/鍵をかける4.mp3"
-import conplete_sound from "../../assets/music/effect-sound/タスク完了.mp3"
-import buttun_hover from "../../assets/music/effect-sound/ボタンホバー.mp3"
-import close_button from "../../assets/music/effect-sound/閉じるボタン.mp3"
+import title_Call from "../../assets/music/common/title_call.mp3"
+import select_effect from "../../assets/music/effect-sound/chara_hover.mp3"
+import click_effect from "../../assets/music/effect-sound/click.mp3"
+import click_detail from "../../assets/music/effect-sound/page_roll.mp3"
+import sort_sound from "../../assets/music/effect-sound/sort.mp3"
+import conplete_sound from "../../assets/music/effect-sound/task_cmp.mp3"
+import buttun_hover from "../../assets/music/effect-sound/button_hover.mp3"
+import close_button from "../../assets/music/effect-sound/close.mp3"
 
 export const titleBGM = title_Bgm;
 export const appBGM = app_bgm;

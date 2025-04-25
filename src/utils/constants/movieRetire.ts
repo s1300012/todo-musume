@@ -1,9 +1,9 @@
-import chara1_1 from "../../assets/charamovies/retire/御影心愛-リタイア-驚き.png"
-import chara1_2 from "../../assets/charamovies/retire/御影心愛-リタイア-罵倒.png"
-import chara2_1 from "../../assets/charamovies/retire/ソフィア-リタイア-驚き.png"
-import chara2_2 from "../../assets/charamovies/retire/ソフィア-リタイア-罵倒.png"
-import chara3_1 from "../../assets/charamovies/retire/東雲懐季-リタイア-驚き.png"
-import chara3_2 from "../../assets/charamovies/retire/東雲懐季-リタイア-応援.png"
+import chara1_1 from "../../assets/charamovies/retire/chara1_1.png"
+import chara1_2 from "../../assets/charamovies/retire/chara1_2.png"
+import chara2_1 from "../../assets/charamovies/retire/chara2_1.png"
+import chara2_2 from "../../assets/charamovies/retire/chara2_2.png"
+import chara3_1 from "../../assets/charamovies/retire/chara3_1.png"
+import chara3_2 from "../../assets/charamovies/retire/chara3_2.png"
 
 export type MovieChara = {
     id: number;
